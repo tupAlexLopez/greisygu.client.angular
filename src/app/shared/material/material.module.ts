@@ -17,9 +17,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree'
 import { MatTableModule } from '@angular/material/table'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 
 @NgModule({
   exports: [
+    MatButtonToggleModule,
+    MatPaginatorModule,
     MatTreeModule,
     MatTableModule,
     MatAutocompleteModule,
