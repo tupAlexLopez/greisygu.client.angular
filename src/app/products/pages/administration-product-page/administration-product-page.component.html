@@ -1,1 +1,55 @@
-<p>administration-product-page works!</p>
+<h1>Administracion de productos</h1>
+<mat-divider></mat-divider>
+
+<div class="d-flex justify-content-between align-items-center m-2">
+    <div>
+        <button 
+            mat-raised-button 
+            style="color: white; background-color: green;"
+            (click)="openSaveDialog()">
+            <mat-icon>add</mat-icon> Agregar nuevo producto
+        </button>
+    </div>
+    <div>
+        <input class="m-2" style="width: 600px;" type="text" placeholder="¿Que producto desea buscar?">        
+        <button mat-raised-button color="primary">
+            <mat-icon>search</mat-icon> Buscar
+        </button>
+    </div>
+</div>
+
+
+<table class="table table-striped">    
+    <thead>
+        <tr>
+            <th 
+                *ngFor="let col of columnsTable" 
+                scope="col">
+                {{ col }}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of dataSource"
+        scope="row">
+            <td style="width: 100px; "><img [src]="item.img" alt="Product img" style="height: 100px;"></td>
+            <td>{{ item.id }}</td>
+            <td style="width: 25rem;">{{ item.description }}</td>
+            <td>$ {{ item.price }}</td>
+            <td>{{ item.available |stringBoolean }}</td>
+            <td>{{ item.category.name |uppercase}}</td>
+            <td>
+                <button mat-raised-button style="background-color: orange;" class="m-2" (click)="openSaveDialog()"><mat-icon>edit</mat-icon></button>
+                <button mat-raised-button style="background-color: yellow;" class="m-2"><mat-icon>do_not_disturb_on</mat-icon></button>
+                <button mat-raised-button style="background-color: red;"  class="m-2" (click)="openDeleteDialog()"><mat-icon>delete</mat-icon></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<mat-paginator 
+    [length]="100"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page">
+</mat-paginator>
+
