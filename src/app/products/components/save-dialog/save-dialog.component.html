@@ -1,0 +1,68 @@
+<h1 class="text-center mb-2">Agregar producto</h1>
+<mat-divider></mat-divider>
+  
+<form [formGroup]="formData" (ngSubmit)="onSave()" autocomplete="off" style="width: 800px; ">
+  <div class="d-flex text-center">
+    <div class="m-2">
+        <div>
+          <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <input 
+              matInput
+              type="text" 
+              required
+              formControlName="description"
+            >
+          </mat-form-field>
+        </div>
+        <mat-form-field class="col">
+          <mat-label>Precio $</mat-label>
+          <input 
+            matInput
+            type="number" 
+            required
+            formControlName="price"
+          >
+        </mat-form-field>
+  
+        <mat-form-field class="col">
+          <mat-label>¿Disponible?</mat-label>
+          <mat-select>
+            <mat-option value="true">{{ 'si' |uppercase }}</mat-option>
+            <mat-option value="false">{{ 'no' |uppercase }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col">
+            <mat-label>Categoria</mat-label>
+            <mat-select>
+              <mat-option value="true">{{ 'bebidas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile01">
+          </div>      
+      </div>
+      <div class="card" style="width: 50rem;">
+        <img class="card-img" style="height: 100%;" src="https://wallpapers.com/images/featured/goku-super-saiyan-pictures-dm8zixw58guf3x1b.jpg" alt="image heroe" mat-card-image>
+      </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="m-2">
+      <button mat-button style="background-color: green; color: white;">Guardar</button>
+    </div>
+    <div class="m-2">
+      <button mat-button (click)="onCancel()">Cancelar</button>
+    </div>
+  </div>
+</form>
