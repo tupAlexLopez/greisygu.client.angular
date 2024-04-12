@@ -4,8 +4,10 @@ export interface CategoryResponse {
 };
 
 export interface ProductResponse {
+    img:string;
     id: number;
     description: string;
     price: number;
+    available: boolean;
     category: CategoryResponse;
 }

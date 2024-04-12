@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,10 +16,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree'
+import { MatTableModule } from '@angular/material/table'
 
 @NgModule({
   exports: [
     MatTreeModule,
+    MatTableModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
