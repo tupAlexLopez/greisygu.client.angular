@@ -19,8 +19,8 @@ export class LayoutComponent implements OnInit{
   ngOnInit(): void {
     this.sidebarItems = [
       { label: 'Home', icon: 'home', url: './home' },
-      { label: 'Productos', icon: 'inventory_2', url: './products/list' },
-      { label: 'Categoria', icon: 'category', url: './products/admin' },
+      { label: 'Administracion', icon: 'web', url: './products/admin' },
+      { label: 'Vista general', icon: 'settings', url: './products/list' },
     ]
   }
 }
