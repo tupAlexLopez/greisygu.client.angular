@@ -27,34 +27,26 @@
   
         <mat-form-field class="col">
           <mat-label>¿Disponible?</mat-label>
-          <mat-select>
-            <mat-option value="true">{{ 'si' |uppercase }}</mat-option>
-            <mat-option value="false">{{ 'no' |uppercase }}</mat-option>
+          <mat-select formControlName="available">
+            <mat-option [value]="true">{{ 'si' |uppercase }}</mat-option>
+            <mat-option [value]="false">{{ 'no' |uppercase }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="col">
             <mat-label>Categoria</mat-label>
-            <mat-select>
-              <mat-option value="true">{{ 'bebidas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
-              <mat-option value="false">{{ 'galletitas' |uppercase }}</mat-option>
+            <mat-select formControlName="category">
+              <mat-option value="bebidas">{{ 'bebidas' |uppercase }}</mat-option>
+              <mat-option value="galletitas">{{ 'galletitas' |uppercase }}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <div class="input-group">
-            <input type="file" class="form-control" id="inputGroupFile01">
+            <input type="file" class="form-control" (change)="onFileSelected($event)" formControlName="img" accept="image/*">
           </div>      
       </div>
       <div class="card" style="width: 50rem;">
-        <img class="card-img" style="height: 100%;" src="https://wallpapers.com/images/featured/goku-super-saiyan-pictures-dm8zixw58guf3x1b.jpg" alt="image heroe" mat-card-image>
+        <img class="card-img" style="height: 100%;" [src]="productForm |urlImage" alt="image heroe" mat-card-image>
       </div>
   </div>
   <div class="d-flex justify-content-center">

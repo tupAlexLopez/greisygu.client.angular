@@ -9,6 +9,7 @@ import { SaveDialogComponent } from './components/save-dialog/save-dialog.compon
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
+import { UrlImagePipe } from '../pipes/url-image.pipe';
 
 
 @NgModule({
@@ -19,7 +20,10 @@ import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
     ConfirmDialogComponent
   ],
   imports: [
+    // Pipes:
     StringBooleanPipe,
+    UrlImagePipe,
+    
     CommonModule,
     MaterialModule,
     ProductsRoutingModule,

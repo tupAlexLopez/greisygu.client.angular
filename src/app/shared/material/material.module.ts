@@ -19,9 +19,11 @@ import { MatTreeModule } from '@angular/material/tree'
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
+import { MatMenuModule } from '@angular/material/menu'
 
 @NgModule({
   exports: [
+    MatMenuModule,
     MatButtonToggleModule,
     MatPaginatorModule,
     MatTreeModule,

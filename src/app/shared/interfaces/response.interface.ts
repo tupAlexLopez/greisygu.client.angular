@@ -5,9 +5,16 @@ export interface CategoryResponse {
 
 export interface ProductResponse {
     img:string;
-    id: number;
+    id: string;
     description: string;
     price: number;
     available: boolean;
     category: CategoryResponse;
+}
+
+export enum OPTIONS{
+    SAVE='save',
+    UPDATE='update',
+    DELETE='delete',
+    DISABLE='disable'
 }
