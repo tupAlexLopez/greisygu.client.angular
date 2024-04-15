@@ -1,8 +1,6 @@
-<router-outlet />
 <mat-sidenav-container fullscreen autosize>
     <mat-sidenav #sidenav mode="over" [ngStyle]="{ width: '250px' }">
-        
-        <mat-toolbar>
+        <mat-toolbar class="bg-primary">
             <span>Product Menu Bar</span>
             <span class="spacer"></span>
                 <button 
@@ -22,16 +20,15 @@
         </mat-nav-list>
     </mat-sidenav>
 
-    <mat-toolbar color="primary">
+    <mat-toolbar class="bg-primary">
         <button 
         mat-icon-button 
         (click)="sidenav.toggle()"
         >
         <mat-icon>menu</mat-icon>
     </button>
-    
-    <span class="spacer"></span>
-    <span>GreisiGu$ App</span>
+
+    <span class="text-light">GreisiGu$</span>
     </mat-toolbar>
 
     <div class="p-2">
