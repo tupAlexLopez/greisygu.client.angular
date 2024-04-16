@@ -10,6 +10,8 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { ReactiveFormsModule } from '@angular/forms';
 import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
 import { UrlImagePipe } from '../pipes/url-image.pipe';
+import { SearchProductsComponent } from './components/search-products/search-products.component';
+import { FilterCategoryComponent } from './components/filter-category/filter-category.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { UrlImagePipe } from '../pipes/url-image.pipe';
     AdministrationProductPageComponent,
     ListProductPageComponent,
     SaveDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    SearchProductsComponent,
+    FilterCategoryComponent
   ],
   imports: [
     // Pipes:
