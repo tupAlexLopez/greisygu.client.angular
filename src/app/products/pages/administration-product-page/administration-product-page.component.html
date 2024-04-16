@@ -9,16 +9,10 @@
                 + Agregar nuevo producto
             </button>
         
-            <button mat-button [matMenuTriggerFor]="menu">Categoria</button>
-            <mat-menu #menu="matMenu">
-                    <button mat-menu-item>Item 1</button>
-                    <button mat-menu-item>Item 2</button>
-            </mat-menu>
+           <product-filter-category />
         </div>
-        <div class="col-4 d-flex justify-content-end">
-            <mat-form-field class="w-75">
-                <input matInput placeholder="¿Que desea buscar?">
-            </mat-form-field>
+        <div>
+            <product-search />
         </div>
     </div>
     
