@@ -12,6 +12,7 @@ import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
 import { UrlImagePipe } from '../pipes/url-image.pipe';
 import { SearchProductsComponent } from './components/search-products/search-products.component';
 import { FilterCategoryComponent } from './components/filter-category/filter-category.component';
+import { CardProductComponent } from './components/card-product/card-product.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FilterCategoryComponent } from './components/filter-category/filter-cat
     SaveDialogComponent,
     ConfirmDialogComponent,
     SearchProductsComponent,
-    FilterCategoryComponent
+    FilterCategoryComponent,
+    CardProductComponent
   ],
   imports: [
     // Pipes:

@@ -1,3 +1,26 @@
 <mat-form-field class="w-75">
-    <input matInput placeholder="¿Que desea buscar?">
+    <input type="text"    
+        matInput 
+        placeholder="¿Que desea buscar?"
+        (keyup.enter)="onInputEnter()"
+        (input)="searchProduct()"
+        [formControl]="searchInput"
+        [matAutocomplete]="auto" 
+    />
+    
+    <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        (optionSelected)=" onSelectedOption($event) ">
+        <mat-option *ngFor="let product of products">
+            {{ product.description }}
+        </mat-option>
+        <mat-option 
+            *ngIf="products?.length === 0 && searchInput.value"
+            value=""
+            disabled="true"
+            >
+            No se encuentra '{{ searchInput.value }}'
+        </mat-option>
+    </mat-autocomplete>
 </mat-form-field>
