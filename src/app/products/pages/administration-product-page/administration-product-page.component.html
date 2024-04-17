@@ -12,7 +12,7 @@
            <product-filter-category />
         </div>
         <div>
-            <product-search />
+            <product-search (eventEmitter)="refreshDatasource( $event )"/>
         </div>
     </div>
     

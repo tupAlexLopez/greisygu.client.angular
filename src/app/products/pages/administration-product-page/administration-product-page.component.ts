@@ -5,6 +5,7 @@ import { SaveDialogComponent } from '../../components/save-dialog/save-dialog.co
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { filter, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProductService } from '../../services/product.service';
 
 const category:CategoryResponse = {
   id: 1,
@@ -21,19 +22,15 @@ export class AdministrationProductPageComponent implements OnInit{
   public dataSource:ProductResponse[] = [];
 
   constructor( 
+    private service:ProductService,
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.columnsTable = [ 'Imagen', 'ID', 'Descripcion', 'Precio', 'Disponible', 'Categoria', 'Opciones'];
-    this.dataSource = [
-      { img: 'https://maxiconsumo.com/media/catalog/product/cache/8313a15b471f948db4d9d07d4a9f04a2/1/9/19904_169120741864cdc6fa669305.47676088.jpg' ,id: "1", description: 'Gaseosa Secco de Pomelo de 3Lts Gaseosa Secco de Pomelo de 3Lts Gaseosa Secco de Pomelo de 3Lts Gaseosa Secco de Pomelo de 3Lts Gaseosa Secco de Pomelo de 3Lts', price: 10, available: true, category: category },
-      { img: 'https://maxiconsumo.com/media/catalog/product/cache/8313a15b471f948db4d9d07d4a9f04a2/1/9/19904_169120741864cdc6fa669305.47676088.jpg' ,id: "1", description: 'Product 1', price: 10, available: true, category: category },
-      { img: 'https://maxiconsumo.com/media/catalog/product/cache/8313a15b471f948db4d9d07d4a9f04a2/1/9/19904_169120741864cdc6fa669305.47676088.jpg' ,id: "1", description: 'Product 1', price: 10, available: true, category: category },
-      { img: 'https://maxiconsumo.com/media/catalog/product/cache/8313a15b471f948db4d9d07d4a9f04a2/1/9/19904_169120741864cdc6fa669305.47676088.jpg' ,id: "1", description: 'Product 1', price: 10, available: true, category: category },
-      { img: 'https://maxiconsumo.com/media/catalog/product/cache/8313a15b471f948db4d9d07d4a9f04a2/1/9/19904_169120741864cdc6fa669305.47676088.jpg' ,id: "1", description: 'Product 1', price: 10, available: true, category: category },
-    ]
+    this.service.getAll()
+      .subscribe( data => this.dataSource = data );
   }
 
   public openDialog( optionSelected?:string, data?:ProductResponse  ):void {
@@ -62,6 +59,8 @@ export class AdministrationProductPageComponent implements OnInit{
     //   )
     // .subscribe();
   }
+
+  public refreshDatasource( products:ProductResponse[] ):void { this.dataSource = products; }
 
   public openDeleteDialog():void {
     const dialogRef = this.dialog.open( ConfirmDialogComponent );
