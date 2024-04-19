@@ -10,7 +10,8 @@ export class UrlImagePipe implements PipeTransform {
   transform(value: ProductResponse ): string {
     if(!value.img) return 'assets/no-image.png';
 
-    return value.img;
+    
+    return `http://localhost:8080/media/${value.img}`;
   }
 
 }
