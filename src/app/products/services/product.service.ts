@@ -14,7 +14,15 @@ export class ProductService {
     return this.http.get<ProductResponse[]>( 'http://localhost:8080/products');
   }
 
-  public getAllProductsBy( description:string ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>(`http://localhost:8080/products/search?description=${description}`);
+  public getAllByDescription( description:string ):Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(`http://localhost:8080/products/search?description=${ description }`);
+  }
+  
+  public getAllByDescriptionAndCategoryName( description:string, category:string ):Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(`http://localhost:8080/products/search?description=${ description }&category=${ category }`);
+  }
+  
+  public getAllByCategoryName( name:string ):Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(`http://localhost:8080/products/category/${ name }`);
   }
 }
