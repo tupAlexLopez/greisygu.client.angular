@@ -1,14 +1,16 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProductResponse } from 'src/app/shared/interfaces/response.interface';
+import { CategoryResponse, ProductResponse } from 'src/app/shared/interfaces/response.interface';
 
 @Component({
   selector: 'products-save-dialog',
   templateUrl: './save-dialog.component.html',
   styleUrls: ['./save-dialog.component.css']
 })
-export class SaveDialogComponent {
+export class SaveDialogComponent implements OnInit{
+  public newImage?: string;
+  @Input() categories:CategoryResponse[] = [];
   public formData:FormGroup = this.formBuilder.group({
     id: [ '', Validators.required ],
     img: [ '', Validators.required ],
@@ -19,7 +21,7 @@ export class SaveDialogComponent {
   });
 
 
-  constructor( 
+  constructor(
     private dialog: MatDialogRef<SaveDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data:ProductResponse,
     private formBuilder:FormBuilder,
@@ -29,6 +31,10 @@ export class SaveDialogComponent {
     }
   }
 
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+
   get productForm():ProductResponse {
     return this.formData.value as ProductResponse;
   }
@@ -36,7 +42,7 @@ export class SaveDialogComponent {
   private fillForm( data:ProductResponse ){
     this.formData.setValue({
       id: data.id,
-      img: data.img,
+      img: data.img ?? '',
       description: data.description,
       price: data.price,
       available: data.available,

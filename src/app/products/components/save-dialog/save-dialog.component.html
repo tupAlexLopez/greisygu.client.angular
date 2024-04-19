@@ -36,8 +36,7 @@
         <mat-form-field class="col">
             <mat-label>Categoria</mat-label>
             <mat-select formControlName="category">
-              <mat-option value="bebidas">{{ 'bebidas' |uppercase }}</mat-option>
-              <mat-option value="galletitas">{{ 'galletitas' |uppercase }}</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -45,8 +44,15 @@
             <input type="file" class="form-control" (change)="onFileSelected($event)" formControlName="img" accept="image/*">
           </div>      
       </div>
+      
       <div class="card" style="width: 50rem;">
-        <img class="card-img" style="height: 100%;" [src]="productForm |urlImage" alt="image heroe" mat-card-image>
+        <div *ngIf="formData.get('img')?.value === ''; else default">
+          <img class="card-img" style="height: 100%;" [src]="productForm |urlImage" mat-card-image>
+        </div>
+        
+        <ng-template #default>
+          <img class="card-img" style="height: 100%;" [src]="formData.get('img')?.value" mat-card-image>
+        </ng-template>
       </div>
   </div>
   <div class="d-flex justify-content-center">

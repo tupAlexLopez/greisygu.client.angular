@@ -11,8 +11,8 @@
     <mat-autocomplete
         autoActiveFirstOption
         #auto="matAutocomplete"
-        (optionSelected)=" onSelectedOption($event) ">
-        <mat-option *ngFor="let product of products">
+        (optionSelected)="onSelectedOption($event) ">
+        <mat-option *ngFor="let product of products" [value]="product.description">
             {{ product.description }}
         </mat-option>
         <mat-option 
