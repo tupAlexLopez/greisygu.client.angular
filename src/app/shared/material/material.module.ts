@@ -20,9 +20,11 @@ import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatMenuModule } from '@angular/material/menu'
+import { MatCheckboxModule } from '@angular/material/checkbox'
 
 @NgModule({
   exports: [
+    MatCheckboxModule,
     MatMenuModule,
     MatButtonToggleModule,
     MatPaginatorModule,
