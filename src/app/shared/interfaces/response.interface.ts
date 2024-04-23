@@ -4,11 +4,11 @@ export interface CategoryResponse {
 };
 
 export interface ProductResponse {
-    img:string;
     id: string;
     description: string;
     price: number;
     available: boolean;
+    img:string;
     category: CategoryResponse;
 }
 
@@ -17,4 +17,9 @@ export enum OPTIONS{
     UPDATE='update',
     DELETE='delete',
     DISABLE='disable'
+}
+
+export interface ImageResponse {
+    filename: string,
+    url: string
 }

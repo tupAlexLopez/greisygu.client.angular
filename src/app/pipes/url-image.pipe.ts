@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Product } from '../shared/interfaces/response.interface';
 import { environments } from 'src/environments/environment';
 
 @Pipe({

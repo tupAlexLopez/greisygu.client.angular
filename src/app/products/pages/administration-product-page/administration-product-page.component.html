@@ -1,53 +1,63 @@
 <div class="container p-2 text-center">
-    <h1>Administracion de productos</h1>
-    <hr>
-    <div class="row">
-        <div class="col-8 d-flex justify-content-start">
+    <span *ngIf="getCurrentSizeDatasource === 0; else dashboard">
+        <h1>No se encontraron registros de productos.</h1>
+        <div class="text-center m-2">
             <button style="margin-right: 2rem;" 
                 mat-button class="text-light bg-success"
-                (click)="openDialog( 'save' )">
-                + Agregar nuevo producto
+                (click)="openSaveDialog( 'save' )">
+                Agregar nuevo producto
             </button>
+        </div>
+    </span>
+    <ng-template #dashboard>
+        <h1>Administracion de productos</h1>
+        <hr>
+        <product-search (searchBox)="setSearchValue( $event )"/>
         
-           <product-filter-category />
+        <div class="row align-items-end">
+            <div class="col-4 text-start">
+                <div>
+                    <button
+                        mat-button class="text-light bg-success"
+                        (click)="openSaveDialog( 'save' )">
+                        + Agregar nuevo producto
+                    </button>
+                </div>
+            </div>
+            <div class="col-8 text-end">
+                <span><strong>Filtrar por</strong> </span>
+                <product-filter-category  (eventCategory)="setCategoryName(  $event )" class="m-2"/>
+                <product-filter-available (available)="setAvailable( $event )" />
+            </div>
         </div>
-        <div>
-            <product-search (eventEmitter)="refreshDatasource( $event )"/>
-        </div>
-    </div>
-    
-    <table class="table table-striped">    
-        <thead>
-            <tr>
-                <th 
-                    *ngFor="let col of columnsTable" 
-                    scope="col">
-                    {{ col }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of dataSource"
-            scope="row">
-                <td style="width: 100px; "><img [src]="item |urlImage" [alt]="item.description +'image'" style="height: 80px;"></td>
-                <td>{{ item.id }}</td>
-                <td style="width: 25rem;">{{ item.description }}</td>
-                <td>$ {{ item.price }}</td>
-                <td>{{ item.available |stringBoolean }}</td>
-                <td>{{ item.category.name |uppercase}}</td>
-                <td>
-                    <button class="m-2" style="background-color: orange;" mat-button (click)="openDialog( 'update', item )"><i><mat-icon>edit</mat-icon></i></button>
-                    <button class="m-2" style="background-color: yellow;" mat-button (click)="openDialog( 'disable' )"><i><mat-icon>block</mat-icon></i></button>
-                    <button class="m-2" style="background-color: red;" mat-button (click)="openDialog( 'delete' )"><i><mat-icon>delete</mat-icon></i></button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <mat-paginator 
-        [length]="100"
-        [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 100]"
-        aria-label="Select page">
-    </mat-paginator>
-
+        
+        <table class="table table-striped">    
+            <thead>
+                <tr>
+                    <th 
+                        *ngFor="let col of columnsTable" 
+                        scope="col">
+                        {{ col }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of dataSource"
+                scope="row">
+                    <td style="width: 100px; "><img [src]="item.img |urlImage" [alt]="item.description +'image'" style="height: 80px;"></td>
+                    <td>{{ item.id }}</td>
+                    <td style="width: 25rem;">{{ item.description }}</td>
+                    <td>$ {{ item.price }}</td>
+                    <td><mat-icon>{{ item.available |stringBoolean}}</mat-icon></td>
+                    <td>{{ item.category.name |uppercase}}</td>
+                    <td>
+                        <button class="m-2" style="background-color: orange;" mat-button (click)="openSaveDialog( 'update', item )"><i><mat-icon>edit</mat-icon></i></button>
+                        <button class="m-2" style="background-color: yellow;" mat-button (click)="openConfirmDialog( 'disable', item )"><i><mat-icon>block</mat-icon></i></button>
+                        <button class="m-2" style="background-color: red;" mat-button (click)="openConfirmDialog( 'delete', item )"><i><mat-icon>delete</mat-icon></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-template>
 </div>
+   

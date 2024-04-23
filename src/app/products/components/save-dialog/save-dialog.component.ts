@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CategoryResponse, Product } from 'src/app/shared/interfaces/response.interface';
+import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
 import { ProductRequest } from '../../../shared/interfaces/request.interface';
 import { CategoryService } from '../../services/category.service';
 import { ValidatorService } from '../../services/validator.service';
@@ -30,7 +30,7 @@ export class SaveDialogComponent implements OnInit{
     private validator:ValidatorService,
     private categoryService: CategoryService,
     private dialog: MatDialogRef<SaveDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:Product,
+    @Inject(MAT_DIALOG_DATA) public data:ProductRequest,
     private formBuilder:FormBuilder,
   ){ }
 
@@ -69,7 +69,7 @@ export class SaveDialogComponent implements OnInit{
       description: this.currentProduct.description,
       price: this.currentProduct.price,
       available: this.currentProduct.available,
-      category: { id: this.form.get('category')?.value },
+      category: this.form.get('category')?.value,
       file: this.newImage? (this.newImage as File) : undefined,
     }
 
