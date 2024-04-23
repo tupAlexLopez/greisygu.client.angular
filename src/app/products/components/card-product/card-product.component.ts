@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProductResponse } from '../../../shared/interfaces/response.interface';
+import { Product } from '../../../shared/interfaces/response.interface';
 
 @Component({
   selector: 'product-card',
@@ -7,5 +7,5 @@ import { ProductResponse } from '../../../shared/interfaces/response.interface';
   styleUrls: ['./card-product.component.css']
 })
 export class CardProductComponent {
-  @Input() product?:ProductResponse;
+  @Input() product?:Product;
 }

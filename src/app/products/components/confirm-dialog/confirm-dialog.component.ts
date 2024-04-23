@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { OPTIONS } from 'src/app/shared/interfaces/response.interface';
+import { DataDialog, OPTIONS } from 'src/app/shared/interfaces/util.interface';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -12,22 +12,30 @@ export class ConfirmDialogComponent {
 
   constructor(
     public dialog: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:OPTIONS,
+    @Inject(MAT_DIALOG_DATA) public dataDialog:{ option:OPTIONS, status?:boolean },
   ) {
-    switch(data){
+    console.log( dataDialog.option );
+    switch( dataDialog.option ){
       case OPTIONS.DISABLE:
-        this.title = '¿Desea deshabilitar este producto?'
-        break;
-      
+        if( dataDialog.status === true ){
+          this.title = '¿Desea deshabilitar este producto?';
+        }else{ 
+          this.title = '¿Desea habilitar este producto?';
+        }
+
+      break;
+
       case OPTIONS.DELETE:
+        console.log('Debe llegar aqui.')
         this.title = '¿Desea eliminar este producto?'
-        break;
+      break;
     }
   }
 
   onNoClick(): void {
-    this.dialog.close(false);
+    this.dialog.close();
   }
+
   onClickConfirm(): void {
     this.dialog.close(true);
   }
