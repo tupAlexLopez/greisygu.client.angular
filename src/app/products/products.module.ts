@@ -1,35 +1,36 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ProductsRoutingModule } from './products-routing.module';
 import { AdministrationProductPageComponent } from './pages/administration-product-page/administration-product-page.component';
-import { ListProductPageComponent } from './pages/list-product-page/list-product-page.component';
-import { MaterialModule } from '../shared/material/material.module';
+
 import { SaveDialogComponent } from './components/save-dialog/save-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
-import { UrlImagePipe } from '../pipes/url-image.pipe';
 import { SearchProductsComponent } from './components/search-products/search-products.component';
 import { FilterCategoryComponent } from './components/filter-category/filter-category.component';
-import { CardProductComponent } from './components/card-product/card-product.component';
+
+import { MaterialModule } from '../shared/material/material.module';
+
+import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
+import { UrlImagePipe } from '../pipes/url-image.pipe';
+import { FilterAvailableComponent } from './components/filter-available/filter-available.component';
 
 
 @NgModule({
   declarations: [
     AdministrationProductPageComponent,
-    ListProductPageComponent,
     SaveDialogComponent,
     ConfirmDialogComponent,
     SearchProductsComponent,
     FilterCategoryComponent,
-    CardProductComponent
+    FilterAvailableComponent
   ],
   imports: [
     // Pipes:
     StringBooleanPipe,
     UrlImagePipe,
-    
+    // Modules:
     CommonModule,
     MaterialModule,
     ProductsRoutingModule,

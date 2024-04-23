@@ -13,14 +13,11 @@ type SidebarItem = {
 })
 export class LayoutComponent implements OnInit{
   public sidebarItems:SidebarItem[] = [];
-
-  constructor(){ }
   
   ngOnInit(): void {
     this.sidebarItems = [
       { label: 'Home', icon: 'home', url: './home' },
       { label: 'Administracion', icon: 'web', url: './products/admin' },
-      { label: 'Vista general', icon: 'settings', url: './products/list' },
     ]
   }
 }
