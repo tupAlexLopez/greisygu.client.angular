@@ -15,7 +15,14 @@
         <product-search (searchBox)="setSearchValue( $event )"/>
         
         <div class="row align-items-end">
-            <div class="col-4 text-start">
+            <div class="col text-start">
+                <div class="mb-2">
+                    <button
+                        mat-button class="text-light bg-primary"
+                        (click)="openAdminCategoryDialog()">
+                        Administrar categorias
+                    </button>
+                </div>
                 <div>
                     <button
                         mat-button class="text-light bg-success"
@@ -24,7 +31,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-8 text-end">
+            <div class="col text-end">
                 <span><strong>Filtrar por</strong> </span>
                 <product-filter-category  (eventCategory)="setCategoryName(  $event )" class="m-2"/>
                 <product-filter-available (available)="setAvailable( $event )" />
