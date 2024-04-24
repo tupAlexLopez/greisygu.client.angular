@@ -15,6 +15,7 @@ import { MaterialModule } from '../shared/material/material.module';
 import { StringBooleanPipe } from '../pipes/string-boolean.pipe';
 import { UrlImagePipe } from '../pipes/url-image.pipe';
 import { FilterAvailableComponent } from './components/filter-available/filter-available.component';
+import { CategoryAdminComponent } from './components/category-admin/category-admin.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { FilterAvailableComponent } from './components/filter-available/filter-a
     ConfirmDialogComponent,
     SearchProductsComponent,
     FilterCategoryComponent,
-    FilterAvailableComponent
+    FilterAvailableComponent,
+    CategoryAdminComponent
   ],
   imports: [
     // Pipes:
