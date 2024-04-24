@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { FileService } from '../../services/file.service';
 import { ImageResponse } from '../../../shared/interfaces/response.interface';
+import { CategoryAdminComponent } from '../../components/category-admin/category-admin.component';
 
 @Component({
   selector: 'app-administration-product-page',
@@ -149,6 +150,11 @@ export class AdministrationProductPageComponent implements OnInit{
     }
   }
 
+  public openAdminCategoryDialog(): void {
+    const dialogRef = this.dialog.open( CategoryAdminComponent, {  width: '450px' } );
+    dialogRef.afterClosed().subscribe( ()=> this.refreshPage() );
+  }
+
   public refreshDatasource():void { 
     
     if( this.searchBoxValue && 
@@ -188,7 +194,14 @@ export class AdministrationProductPageComponent implements OnInit{
     let dialog;
     switch( option ){
       case OPTIONS.DELETE:
-        dialog = this.dialog.open( ConfirmDialogComponent, { data: { option: OPTIONS.DELETE } } );
+        dialog = this.dialog.open( ConfirmDialogComponent, 
+          { 
+            data: {
+              title: '¿Esta seguro que desea eliminar este producto?',
+              description: 'Este proceso es irreversible.'
+            }
+          }
+        );
         dialog.afterClosed()
         .subscribe( result =>  {
           if(!result)
@@ -205,7 +218,13 @@ export class AdministrationProductPageComponent implements OnInit{
       break;
 
       case OPTIONS.DISABLE:
-        dialog = this.dialog.open( ConfirmDialogComponent, { data: { option: OPTIONS.DISABLE, status: product.available } } );
+        dialog = this.dialog.open( ConfirmDialogComponent, 
+          { 
+            data: {
+              title: product.available ?  '¿Desea deshabilitar este producto?' : '¿Desea habilitar este producto?'
+            }
+          }
+        );
         dialog.afterClosed()
         .subscribe( result =>  {
           if(!result)
