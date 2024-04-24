@@ -33,7 +33,7 @@ export class ProductService {
     );
   }
   public disable( id:string, available:boolean ):Observable<boolean> {
-    return this.http.get( this.base_url + `/${id}/set?available=${ available }`)
+    return this.http.patch( this.base_url + `/${id}/${ available }`, { })
     .pipe(
       catchError(()=> of( false ) ),
       map( () => true)
