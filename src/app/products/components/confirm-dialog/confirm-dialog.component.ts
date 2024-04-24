@@ -7,28 +7,13 @@ import { OPTIONS } from 'src/app/shared/interfaces/util.interface';
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.css']
 })
-export class ConfirmDialogComponent implements OnInit{
+export class ConfirmDialogComponent {
   public title?:string;
 
   constructor(
     public dialog: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public dataDialog:{ option:OPTIONS, status?:boolean },
+    @Inject(MAT_DIALOG_DATA) public dataDialog:{ title:string, description?:string },
   ) { }
-
-  ngOnInit(): void {
-    switch( this.dataDialog.option ){
-      case OPTIONS.DISABLE:
-        this.title = (this.dataDialog.status) ? 
-          '¿Desea deshabilitar este producto?' : 
-          '¿Desea habilitar este producto?';
-      
-      break;
-
-      case OPTIONS.DELETE:
-        this.title = '¿Desea eliminar este producto?'
-      break;
-    }
-  }
 
   onNoClick(): void {
     this.dialog.close();
