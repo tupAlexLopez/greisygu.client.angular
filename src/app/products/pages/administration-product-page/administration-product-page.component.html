@@ -65,6 +65,32 @@
                 </tr>
             </tbody>
         </table>
+
+        <nav class="d-flex justify-content-center">
+            <ul class="pagination pagination-sm">
+                <li class="page-item pointer" [ngClass]="{ 'disabled': dataPage?.isFirst }">
+                    <a class="page-link" (click)="onNavigate( dataPage?.pageable!.pageNumber )" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li 
+                    *ngFor="let page of pages"
+                    class="page-item pointer"
+                    [ngClass]="{'active': (dataPage?.pageable!.pageNumber + 1) === page}"
+                    (click)="onNavigate( page )"
+                >
+                    <a class="page-link">{{ page }}</a>
+                </li>
+
+                <li class="page-item pointer" [ngClass]="{ 'disabled': dataPage?.isLast }">
+                <a class="page-link" (click)="onNavigate( dataPage?.pageable!.pageNumber + 2 )" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+        </nav>
+        
     </ng-template>
 </div>
    
