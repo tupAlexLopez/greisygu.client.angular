@@ -13,8 +13,12 @@ export class ProductService {
 
   constructor( private http: HttpClient ) { }
 
-  public getAll():Observable<ProductResponse[]>{
-    return this.http.get<ProductResponse[]>( this.base_url );
+  public getAll( page?:number, size?:number ):Observable<ProductResponse>{
+    let url:string = this.base_url;
+    if(page)
+      url = this.base_url + `?page=${ page }`;
+
+    return this.http.get<ProductResponse>( url );
   }
 
   public save( product:ProductRequest ):Observable<ProductResponse> {
