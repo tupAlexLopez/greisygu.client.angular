@@ -38,11 +38,11 @@ export class SearchProductsComponent implements OnInit, OnDestroy{
   searchProduct() {
     const value:string = this.searchInput.value || '';
     if(value === '') return;
-
-    this.productService.getAllByDescription( value )
-      .subscribe(prod => {
-        this.descriptions =prod.map( p => p.description )
-      });
+    //TODO: Arreglar aqui!
+    // this.productService.getAllByDescription( value )
+    //   .subscribe(prod => {
+    //     this.descriptions =prod.map( p => p.description )
+    //   });
   }
 
   onSelectedOption( event:MatAutocompleteSelectedEvent ):void { 
