@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OPTIONS, ProductResponse } from 'src/app/shared/interfaces/response.interface';
+import { DataPage, OPTIONS, Pageable, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
 import { SaveDialogComponent } from '../../components/save-dialog/save-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { filter, tap } from 'rxjs';
@@ -24,10 +24,11 @@ export class AdministrationProductPageComponent implements OnInit{
   private searchBoxValue?:string;
   private availableSelected?:boolean;
 
-
+  public pages:number[] = [];
   public columnsTable:string[] = [];
-  public dataSource:ProductResponse[] = [];
+  public dataSource:Product[] = [];
 
+  public dataPage?:DataPage;
   constructor( 
     private router:Router,
     private productService:ProductService,
@@ -39,9 +40,26 @@ export class AdministrationProductPageComponent implements OnInit{
   ngOnInit(): void {
     this.columnsTable = [ 'Imagen', 'ID', 'Descripcion', 'Precio', 'Disponible', 'Categoria', 'Opciones'];
     this.productService.getAll()
-      .pipe( tap( data => this.currentSizeDatasource = data.length ), )
-      .subscribe( data => this.dataSource = data );
-    
+      .pipe( 
+        tap( resp => {
+
+          this.dataPage = {
+            pageable: resp.pageable,
+            isFirst: resp.first,
+            isLast: resp.last,
+            numberOfElements: resp.numberOfElements,
+            totalPages: resp.totalPages
+          };
+        }),
+        tap( ()=> {
+          for (let i = 1; i <= this.dataPage!.totalPages; i++) {
+            this.pages.push(i);
+          }
+        }),
+        tap( resp => this.currentSizeDatasource = resp.numberOfElements ),
+        tap( resp => this.dataSource= resp.content ),
+      )
+      .subscribe(); 
   }
 
   get getSearchValue():string {
@@ -74,7 +92,7 @@ export class AdministrationProductPageComponent implements OnInit{
     return this.currentSizeDatasource;
   }
 
-  public openSaveDialog( optionSelected:string, product?:ProductResponse  ):void {
+  public openSaveDialog( optionSelected:string, product?:Product  ):void {
     let dialogRef;
     switch( optionSelected ){
       case OPTIONS.SAVE:
@@ -156,41 +174,10 @@ export class AdministrationProductPageComponent implements OnInit{
   }
 
   public refreshDatasource():void { 
-    
-    if( this.searchBoxValue && 
-      this.categorySelected && this.availableSelected
-    ){
-      this.productService.getAllByDescriptionAndCategoryNameAndAvailable( this.searchBoxValue, this.categorySelected, this.availableSelected )
-      .subscribe( resp => this.dataSource = resp );
-
-      return;
-    }
-
-    if( this.searchBoxValue && this.categorySelected ){
-      this.productService.getAllByDescriptionAndCategoryName( this.searchBoxValue, this.categorySelected )
-      .subscribe(resp => this.dataSource = resp );
-
-      return;
-    }
-
-    if( this.searchBoxValue  ) {
-      this.productService.getAllByDescription( this.searchBoxValue! ).subscribe(resp => this.dataSource = resp );
-      return;
-    }
-
-    if( this.categorySelected ) {
-      this.productService.getAllByCategoryName( this.categorySelected ).subscribe(resp => this.dataSource = resp );
-      return;
-    }
-
-    if( this.availableSelected !== null ) { 
-      this.productService.getAllByAvailable( this.availableSelected! ).subscribe(resp => this.dataSource = resp );
-      return;
-    }
-
+    //TODO: Aplicar la logica de filtrado
   }
 
-  public openConfirmDialog( option:string, product:ProductResponse ):void {
+  public openConfirmDialog( option:string, product:Product ):void {
     let dialog;
     switch( option ){
       case OPTIONS.DELETE:
@@ -240,6 +227,25 @@ export class AdministrationProductPageComponent implements OnInit{
         });
       break;
     }
+  }
+
+  onNavigate( page:number ){
+    this.productService.getAll( (page - 1) )
+    .pipe(
+      tap( resp => {
+        this.dataPage = {
+          pageable: resp.pageable,
+          isFirst: resp.first,
+          isLast: resp.last,
+          numberOfElements: resp.numberOfElements,
+          totalPages: resp.totalPages
+        };
+        console.log(this.dataPage);
+      }),
+      tap( resp => this.currentSizeDatasource = resp.numberOfElements ),
+      tap( resp => this.dataSource= resp.content ),
+      tap( ()=> console.log(this.dataSource) )
+    ).subscribe();
   }
 
   private saveAndRefresh( request:ProductRequest ):void {
