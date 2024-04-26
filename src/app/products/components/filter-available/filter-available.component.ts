@@ -6,9 +6,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./filter-available.component.css']
 })
 export class FilterAvailableComponent {
-  @Output() available = new EventEmitter<boolean>();
+  @Output() eventAvailable = new EventEmitter<boolean>();
 
   onClickItem( value:boolean ):void {
-    this.available.emit( value );
+    this.eventAvailable.emit( value );
   }
 }
