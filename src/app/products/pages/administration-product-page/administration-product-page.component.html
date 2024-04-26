@@ -4,7 +4,7 @@
         <div class="text-center m-2">
             <button style="margin-right: 2rem;" 
                 mat-button class="text-light bg-success"
-                (click)="openSaveDialog( 'save' )">
+                (click)="onSaveDialog()">
                 Agregar nuevo producto
             </button>
         </div>
@@ -26,14 +26,14 @@
                 <div>
                     <button
                         mat-button class="text-light bg-success"
-                        (click)="openSaveDialog( 'save' )">
+                        (click)="onSaveDialog()">
                         + Agregar nuevo producto
                     </button>
                 </div>
             </div>
             <div class="col text-end">
                 <span><strong>Filtrar por</strong> </span>
-                <product-filter-category [categories]="currentCategories" (eventCategory)="onSelectCategoryName(  $event )" class="m-2"/>
+                <product-filter-category (eventCategory)="onSelectCategory(  $event )" class="m-2"/>
                 <product-filter-available (eventAvailable)="onSelectAvailable( $event )" />
             </div>
         </div>
@@ -42,7 +42,7 @@
             <thead>
                 <tr>
                     <th 
-                        *ngFor="let col of columnsTable" 
+                        *ngFor="let col of datasourceColumns" 
                         scope="col">
                         {{ col }}
                     </th>
@@ -58,7 +58,7 @@
                     <td><mat-icon>{{ product.available |stringBoolean}}</mat-icon></td>
                     <td>{{ product.category.name |uppercase}}</td>
                     <td>
-                        <button class="m-2" style="background-color: orange;" mat-button (click)="openSaveDialog( 'update', product )"><i><mat-icon>edit</mat-icon></i></button>
+                        <button class="m-2" style="background-color: orange;" mat-button (click)="onUpdateDialog( product )"><i><mat-icon>edit</mat-icon></i></button>
                         <button class="m-2" style="background-color: yellow;" mat-button (click)="openConfirmDialog( 'disable', product )"><i><mat-icon>block</mat-icon></i></button>
                         <button class="m-2" style="background-color: red;" mat-button (click)="openConfirmDialog( 'delete', product )"><i><mat-icon>delete</mat-icon></i></button>
                     </td>

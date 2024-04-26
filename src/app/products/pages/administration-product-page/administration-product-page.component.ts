@@ -21,27 +21,24 @@ import { CategoryService } from '../../services/category.service';
 })
 export class AdministrationProductPageComponent implements OnInit{
   datasourceSize:number = 0;
-  currentCategories:CategoryResponse[] = [];
+  private params:Params = { description: undefined, category: undefined, available: undefined };
 
   public pages:number[] = [];
-  public columnsTable:string[] = [];
+  public datasourceColumns:string[] = [];
   public datasource:Product[] = [];
   public dataPage?:DataPage;
-  private params:Params = { description: undefined, category: undefined, available: undefined };
   
   constructor( 
     private router:Router,
     private productService:ProductService,
-    private categoryService:CategoryService,
     private fileService:FileService,
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
   ) {}
 
   ngOnInit(): void {
-    this.columnsTable = [ 'Imagen', 'ID', 'Descripcion', 'Precio', 'Disponible', 'Categoria', 'Opciones'];
-    this.categoryService.getAll().subscribe( response => this.currentCategories = response);
-    this.refreshDatasource();
+    this.loadDatasourceColumns();
+    this.loadDatasource();
   }
   
   onSearchValue( value:string ):void {
@@ -49,7 +46,7 @@ export class AdministrationProductPageComponent implements OnInit{
     this.applyFilters();
   }
   
-  onSelectCategoryName( value:string ):void {
+  onSelectCategory( value:string ):void {
     this.params.category =value;
     this.applyFilters();
   }
@@ -60,85 +57,85 @@ export class AdministrationProductPageComponent implements OnInit{
   }
 
   public applyFilters():void {
-    this.searchBy( this.params );
+    this.loadDatasourceBy( this.params );
   }
 
-
-  public openSaveDialog( optionSelected:string, product?:Product  ):void {
+  public onSaveDialog():void {
     let dialogRef;
-    switch( optionSelected ){
-      case OPTIONS.SAVE:
-        dialogRef = this.dialog.open( SaveDialogComponent );
-        dialogRef.afterClosed()
-        .subscribe( form => {
-          if( !form )
-            return;
 
-          const request: ProductRequest = {
-            description: form.description,
-            price: form.price,
-            available: form.available,
-            img: product?.img ?? '',
-            category: { id: form.category }
-          }
+    dialogRef = this.dialog.open( SaveDialogComponent );
+    dialogRef.afterClosed()
+    .subscribe( form => {
+      if( !form )
+        return;
+
+      const request: ProductRequest = {
+        description: form.description,
+        price: form.price,
+        available: form.available,
+        img: form?.img ?? '',
+        category: { id: form.category }
+      }
 
 
-          if( form.file ){ 
-            const { file } = form;
-            this.fileService.uploadImage( file )
-            .subscribe( (resp:ImageResponse) => {
-              request.img = resp.filename;
-              this.saveAndRefresh( request );
-            });
-
-            return;
-          }
-
+      if( form.file ){ 
+        const { file } = form;
+        this.fileService.uploadImage( file )
+        .subscribe( (resp:ImageResponse) => {
+          request.img = resp.filename;
           this.saveAndRefresh( request );
         });
-      break;
-      case OPTIONS.UPDATE:
-        dialogRef = this.dialog.open( SaveDialogComponent, { data: product } );
-        dialogRef.afterClosed()
-        .subscribe( form => {
-          if( !form )
-            return;
 
-          const request: ProductRequest = {
-            description: form.description,
-            price: form.price,
-            available: form.available,
-            img: product?.img ?? '',
-            category: { id: form.category }
-          }
+        return;
+      }
 
-          if( !product?.img && form.file ){
-            const { file } =form; 
-            this.fileService.uploadImage( file )
-            .subscribe( resp => {
-              request.img = resp.filename;
-              this.updateAndRefresh( product!.id, request );
-            });
+      this.saveAndRefresh( request );
+    });
+  }
 
-            return;
-          }
+  public onUpdateDialog( product:Product ):void {
+    let dialogRef;
+    
+    dialogRef = this.dialog.open( SaveDialogComponent, { data: product } );
+    dialogRef.afterClosed()
+    .subscribe( form => {
+      if( !form )
+        return;
 
-          if( product?.img && form.file ){
-            const { file } =form;
-            this.fileService.updateImage( product.img, file )
-            .subscribe( resp => {
-              request.img = resp.filename; 
-              this.updateAndRefresh( product.id, request );
-            });
+      const request:ProductRequest = {
+        description: form.description,
+        price: form.price,
+        available: form.available,
+        img: product?.img ?? '',
+        category: { id: form.category }
+      }
 
-            return;
-          }
-
+      if( !product?.img && form.file ){
+        const { file } =form; 
+        this.fileService.uploadImage( file )
+        .subscribe( resp => {
+          request.img = resp.filename;
           this.updateAndRefresh( product!.id, request );
         });
-      break;
-    }
+
+        return;
+      }
+
+      if( product?.img && form.file ){
+        const { file } =form;
+        this.fileService.updateImage( product.img, file )
+        .subscribe( resp => {
+          request.img = resp.filename; 
+          this.updateAndRefresh( product.id, request );
+        });
+
+        return;
+      }
+
+      this.updateAndRefresh( product!.id, request );
+    });
   }
+
   public openConfirmDialog( option:string, product:Product ):void {
     let dialog;
     switch( option ){
@@ -190,6 +187,7 @@ export class AdministrationProductPageComponent implements OnInit{
       break;
     }
   }
+
   public openAdminCategoryDialog(): void {
     const dialogRef = this.dialog.open( CategoryAdminComponent, {  width: '450px' } );
     dialogRef.afterClosed().subscribe( (changes)=> {
@@ -200,14 +198,50 @@ export class AdministrationProductPageComponent implements OnInit{
     });
   }
 
+  private loadDatasource( page?:number ):void {
+    this.productService.getAll( page )
+    .pipe(
+      tap( response => {
+        this.dataPage = {
+          pageNumber: (response.pageable.pageNumber + 1),
+          isFirst: response.first,
+          isLast: response.last,
+          totalPages: response.totalPages,
+        };
+        this.datasourceSize = response.totalElements
+      }),
+      tap( () =>  this.loadPages( this.dataPage!.totalPages ) ),
+      map( response => response.content ),
+      tap( products =>  this.datasource = products )
+    )
+    .subscribe();
+  }
+
+  private loadDatasourceBy( params:Params, page?:number ):void {
+    this.productService.searchBy( params, page )
+    .pipe(
+      tap( response => {
+        this.dataPage = {
+          pageNumber: (response.pageable.pageNumber + 1),
+          isFirst: response.first,
+          isLast: response.last,
+          totalPages: response.totalPages
+        };
+      }),
+      tap( () => this.loadPages( this.dataPage!.totalPages ) ),
+      tap( response => this.datasource = response.content ) 
+    )
+    .subscribe();
+  }
+
   onNavigate( page:number ){
     if(this.existsParams()){
-      this.searchBy(this.params, page);
+      this.loadDatasourceBy(this.params, page);
       
       return;
     }
 
-    this.refreshDatasource( page );
+    this.loadDatasource( page );
   }
 
   private saveAndRefresh( request:ProductRequest ):void {
@@ -227,43 +261,7 @@ export class AdministrationProductPageComponent implements OnInit{
     )
     .subscribe();
   }
-
-  private searchBy( params:Params, page?:number ):void {
-    this.productService.searchBy( params, page )
-    .pipe(
-      tap( response => {
-        this.dataPage = {
-          pageNumber: (response.pageable.pageNumber + 1),
-          isFirst: response.first,
-          isLast: response.last,
-          totalPages: response.totalPages
-        };
-      }),
-      tap( () => this.loadPages( this.dataPage!.totalPages ) ),
-      tap( response => this.datasource = response.content ) 
-    )
-    .subscribe();
-  }
-
-  private refreshDatasource( page?:number ):void {
-    this.productService.getAll( page )
-    .pipe(
-      tap( response => {
-        this.dataPage = {
-          pageNumber: (response.pageable.pageNumber + 1),
-          isFirst: response.first,
-          isLast: response.last,
-          totalPages: response.totalPages,
-        };
-        this.datasourceSize = response.totalElements
-      }),
-      tap( () =>  this.loadPages( this.dataPage!.totalPages ) ),
-      map( response => response.content ),
-      tap( products =>  this.datasource = products )
-    )
-    .subscribe();
-  }
-
+  
   private refreshPage(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -277,20 +275,25 @@ export class AdministrationProductPageComponent implements OnInit{
     });
   }
 
-  loadPages( totalPages:number ):void {
+  private loadPages( totalPages:number ):void {
     this.pages = [];
     for( let page=1; page <= totalPages; page++ ){
       this.pages.push(page);
     }
   }
 
-  existsParams():boolean {
+  private loadDatasourceColumns(): void {
+    this.datasourceColumns = [ 'Imagen', 'ID', 'Descripcion', 'Precio', 'Disponible', 'Categoria', 'Opciones'];
+  }
+
+  private existsParams():boolean {
     if( !this.params.description 
       && !this.params.available 
-      && !this.params.category)
-      return false;
+      && !this.params.category) { 
+        return false;
+      }
 
     
-      return true;
+    return true;
   }
 }
