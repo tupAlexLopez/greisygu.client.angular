@@ -12,6 +12,12 @@ export interface Product {
     category: CategoryResponse;
 }
 
+export interface Params {
+    description?:string;
+    category?:string;
+    available?:boolean; 
+}
+
 export enum OPTIONS{
     SAVE='save',
     UPDATE='update',
@@ -25,11 +31,10 @@ export interface ImageResponse {
 }
 
 export interface DataPage {
-    pageable: Pageable,
-    isFirst: boolean,
-    isLast: boolean,
-    numberOfElements: number,
-    totalPages: number
+    pageNumber: number;
+    isFirst: boolean;
+    isLast: boolean;
+    totalPages: number;
 }
 
 export interface ProductResponse {
@@ -56,8 +61,8 @@ export interface Pageable {
     pageSize:   number;
     sort:       Sort;
     offset:     number;
-    unpaged:    boolean;
     paged:      boolean;
+    unpaged:    boolean;
 }
 
 export interface Sort {
