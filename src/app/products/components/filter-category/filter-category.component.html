@@ -4,7 +4,7 @@
                 <mat-option 
                         *ngFor="let category of categories"
                         [value]="category.name" 
-                        (click) ="onClickMenuItem( category.name)">
+                        (click) ="onSelectCategory( category.name)">
                         {{ category.name }}
                 </mat-option>
         </mat-select>
