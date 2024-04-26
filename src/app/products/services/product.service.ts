@@ -22,13 +22,11 @@ export class ProductService {
   public searchBy( params:Params, page:number = 0 ):Observable<ProductResponse> {    
     const paramsUrl = this.getParamsSelected(params);
     const url:string = this.base_url + `/search?page=${page}`+ paramsUrl;
-
-    console.log(url);
   
     return this.http.get<ProductResponse>( url );
   }
 
-  public getAllByDescription( description:string ):Observable<string[]> {
+  public getProductDescriptions( description:string ):Observable<string[]> {
     return this.http.get<ProductResponse>( this.base_url + `/search?page=0&description=${ description }`)
     .pipe( 
       map( response => response.content ),
@@ -36,9 +34,6 @@ export class ProductService {
     );
   }
   
-  public getAllByCategoryName( name:string ):Observable<ProductResponse> {
-    return this.http.get<ProductResponse>( this.base_url + `/category/${ name }`);
-  }
   public save( product:ProductRequest ):Observable<ProductResponse> {
     return this.http.post<ProductResponse>( this.base_url, product );
   }
@@ -60,15 +55,6 @@ export class ProductService {
       catchError(()=> of( false ) ),
       map( () => true)
     );
-  }
-  
-
-  
-  
-  
-
-  public getAllByDescriptionAndCategoryName( description:string, category:string ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>( this.base_url + `/search?description=${ description }&category=${ category }`);
   }
 
   private fieldIsPresent =( params:Params, atr:string ) => {
