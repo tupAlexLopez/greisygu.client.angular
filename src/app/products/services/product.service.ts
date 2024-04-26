@@ -1,3 +1,4 @@
+import { Params } from './../../shared/interfaces/response.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
@@ -13,14 +14,31 @@ export class ProductService {
 
   constructor( private http: HttpClient ) { }
 
-  public getAll( page?:number, size?:number ):Observable<ProductResponse>{
-    let url:string = this.base_url;
-    if(page)
-      url = this.base_url + `?page=${ page }`;
-
+  public getAll( page:number = 0 ):Observable<ProductResponse>{
+    const url:string = this.base_url + `?page=${page}`;
     return this.http.get<ProductResponse>( url );
   }
 
+  public searchBy( params:Params, page:number = 0 ):Observable<ProductResponse> {    
+    const paramsUrl = this.getParamsSelected(params);
+    const url:string = this.base_url + `/search?page=${page}`+ paramsUrl;
+
+    console.log(url);
+  
+    return this.http.get<ProductResponse>( url );
+  }
+
+  public getAllByDescription( description:string ):Observable<string[]> {
+    return this.http.get<ProductResponse>( this.base_url + `/search?page=0&description=${ description }`)
+    .pipe( 
+      map( response => response.content ),
+      map( resp => resp.map( p => p.description ) )
+    );
+  }
+  
+  public getAllByCategoryName( name:string ):Observable<ProductResponse> {
+    return this.http.get<ProductResponse>( this.base_url + `/category/${ name }`);
+  }
   public save( product:ProductRequest ):Observable<ProductResponse> {
     return this.http.post<ProductResponse>( this.base_url, product );
   }
@@ -45,24 +63,32 @@ export class ProductService {
   }
   
 
-  public getAllByCategoryName( name:string ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>( this.base_url + `/category/${ name }`);
-  }
   
-  public getAllByDescription( description:string ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>( this.base_url + `/search?description=${ description }`);
-  }
+  
+  
 
   public getAllByDescriptionAndCategoryName( description:string, category:string ):Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>( this.base_url + `/search?description=${ description }&category=${ category }`);
   }
-  
-  public getAllByDescriptionAndCategoryNameAndAvailable( description:string, category:string, available:boolean ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>( this.base_url + `/search?description=${ description }&category=${ category }&available=${ available }`);
+
+  private fieldIsPresent =( params:Params, atr:string ) => {
+    return Object.prototype.hasOwnProperty.call(params, atr);
   }
-  
-  public getAllByAvailable( available:boolean ):Observable<ProductResponse[]> {
-    return this.http.get<ProductResponse[]>( this.base_url + `/available/${ available }`);
+
+  private getParamsSelected(  params:Params ):string {
+    let urlParams:string = '';
+    const attributes:string[] = Object.keys(params);
+    
+    for( let atr of attributes ){
+        if( this.fieldIsPresent(params, atr) ){
+          if( params[atr as keyof Params] !== undefined ) {
+            const value = params[atr as keyof Params];
+            urlParams += `&${atr}=${value}`
+          }
+        }
+    }
+
+    return urlParams;
   }
   
 }
