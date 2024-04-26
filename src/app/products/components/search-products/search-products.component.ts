@@ -24,7 +24,7 @@ export class SearchProductsComponent {
     const value:string = this.searchInput.value || '';
     if(value === '') return;
     
-    this.productService.getAllByDescription( value )
+    this.productService.getProductDescriptions( value )
     .subscribe( response => this.descriptions = response );
   }
 
