@@ -14,6 +14,7 @@ import { ValidatorService } from '../../services/validator.service';
   styleUrls: ['./category-admin.component.css']
 })
 export class CategoryAdminComponent implements OnInit{
+  private changes:boolean = false;
   private currentCategory?:CategoryResponse;
   
   
@@ -48,7 +49,7 @@ export class CategoryAdminComponent implements OnInit{
   }
 
   onCloseButton():void {
-    this.dialog.close();
+    this.dialog.close( this.changes );
   }
 
   onUpdateButton( category:CategoryResponse ):void {
@@ -87,6 +88,7 @@ export class CategoryAdminComponent implements OnInit{
     }
 
     if( this.currentCategory ){
+      this.changes = true;
       this.currentCategory.name = this.form.get('category')?.value;
       this.categoryService.update( this.currentCategory )
       .pipe( 
