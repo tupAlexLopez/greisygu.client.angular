@@ -1,10 +1,11 @@
 <form [formGroup]="form" (ngSubmit)="onSave()" class="m-4">
-  
   <div class="text-center mb-2">
     <mat-card-title>{{ title }}</mat-card-title>
     <mat-divider></mat-divider>
   </div>
+
   <mat-card-content>
+
     <div class="row">
       <mat-form-field class="col">
         <mat-label>Descripcion</mat-label>
@@ -32,18 +33,21 @@
         </mat-error>
       </mat-form-field> 
     </div>
+
     <div class="text-center">
       <mat-form-field>
-      <mat-label>Categoria</mat-label>
-      <mat-select formControlName="category">
-        <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="isInvalidField('category')">
-        <strong>{{ getFieldError('price') }}</strong> 
-      </mat-error>
-    </mat-form-field>
-    <mat-checkbox [checked]="currentProduct.available">Disponible</mat-checkbox>
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="isInvalidField('category')">
+          <strong>{{ getFieldError('price') }}</strong> 
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox [checked]="currentProduct.available">Disponible</mat-checkbox>
     </div>
+
     <div>
       <label for="image">Seleccione una imagen(JPG o PNG)</label>
       <input 
@@ -51,19 +55,23 @@
         type="file" 
         class="form-control" 
         (change)="onFileSelected($event)" 
-        formControlName="img" 
-        accept="image/jpeg, image/jpg, image/png">
+        accept="image/jpeg, image/jpg, image/png"
+      >
     </div>
+
     <div class="text-center">
       <img 
         style="height: 100px; width: 100px; margin: 10px;" 
-        [src]="alt_img? alt_img : currentProduct.img |urlImage">
+        [src]="alt_img? alt_img : currentProduct.img |urlImage"
+      >
     </div>
   </mat-card-content>
+
   <mat-card-actions class="d-flex justify-content-center">
     <div class="m-2">
       <button mat-button (click)="onSave()" style="background-color: green; color: white;">Guardar</button>
     </div>
+
     <div class="m-2">
       <button mat-button (click)="onCancel()">Cancelar</button>
     </div>

@@ -1,7 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
+
 import { ProductRequest } from '../../../shared/interfaces/request.interface';
 import { CategoryService } from '../../services/category.service';
 import { ValidatorService } from '../../services/validator.service';
@@ -14,17 +16,17 @@ import { ValidatorService } from '../../services/validator.service';
 export class SaveDialogComponent implements OnInit{
   public title:string = 'Agregar nuevo producto';
   public categories: CategoryResponse[]= [];
+
+  public newImage?:File;
+  public alt_img?:any;
   
   public form:FormGroup = this.formBuilder.group({
     description: [ '', Validators.required ],
     price: [ '', [ Validators.required, Validators.pattern(this.validator.numberPattern)] ],
     category: [ '', Validators.required ],
     available: [ true ],
-    img: [ '' ],
+    img: [ '' ]
   });
-
-  public alt_img:any;
-  public newImage?:any;
 
   constructor(
     private validator:ValidatorService,
@@ -36,7 +38,7 @@ export class SaveDialogComponent implements OnInit{
 
   ngOnInit(): void {
     if( this.data ) {
-      this.fillForm( this.data );
+      this.loadForm( this.data );
       this.title = 'Modificar producto';
     }
 
@@ -45,11 +47,7 @@ export class SaveDialogComponent implements OnInit{
       .subscribe( cat => this.categories = cat );
   }
 
-  get currentProduct():ProductRequest {
-    return this.form.value as ProductRequest;
-  }
-
-  private fillForm( data:ProductRequest ){
+  private loadForm( data:ProductRequest ){
     this.form.setValue({
       description: data.description,
       price: data.price,
@@ -57,6 +55,10 @@ export class SaveDialogComponent implements OnInit{
       category: data.category.id,
       img: data.img,
     });
+  }
+
+  get currentProduct():ProductRequest {
+    return this.form.value as ProductRequest;
   }
 
   public onSave():void {
@@ -70,7 +72,7 @@ export class SaveDialogComponent implements OnInit{
       price: this.currentProduct.price,
       available: this.currentProduct.available,
       category: this.form.get('category')?.value,
-      file: this.newImage? (this.newImage as File) : undefined,
+      file: this.newImage? this.newImage : undefined,
     }
 
     this.dialog.close( data );
