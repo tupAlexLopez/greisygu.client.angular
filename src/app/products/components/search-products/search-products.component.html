@@ -5,7 +5,6 @@
         matInput 
         placeholder="¿Que desea buscar?"
         (keyup.enter)="onInputEnter( txtInput.value )"
-        (keyup)="onKeyPress( txtInput.value )"
         #txtInput
         [formControl]="searchInput"
         (input)="searchProduct()"
