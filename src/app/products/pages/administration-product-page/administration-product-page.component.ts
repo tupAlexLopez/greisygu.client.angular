@@ -1,9 +1,10 @@
+import { Params } from './../../../shared/interfaces/response.interface';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DataPage, OPTIONS, Pageable, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
+import { CategoryResponse, DataPage, OPTIONS, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
 import { SaveDialogComponent } from '../../components/save-dialog/save-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
-import { filter, tap } from 'rxjs';
+import { filter, map, pipe, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
@@ -11,6 +12,7 @@ import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { FileService } from '../../services/file.service';
 import { ImageResponse } from '../../../shared/interfaces/response.interface';
 import { CategoryAdminComponent } from '../../components/category-admin/category-admin.component';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-administration-product-page',
@@ -18,20 +20,19 @@ import { CategoryAdminComponent } from '../../components/category-admin/category
   styleUrls: ['./administration-product-page.component.css']
 })
 export class AdministrationProductPageComponent implements OnInit{
-  private currentSizeDatasource:number = 0;
-  
-  private categorySelected?:string;
-  private searchBoxValue?:string;
-  private availableSelected?:boolean;
+  datasourceSize:number = 0;
+  currentCategories:CategoryResponse[] = [];
 
   public pages:number[] = [];
   public columnsTable:string[] = [];
-  public dataSource:Product[] = [];
-
+  public datasource:Product[] = [];
   public dataPage?:DataPage;
+  private params:Params = { description: undefined, category: undefined, available: undefined };
+  
   constructor( 
     private router:Router,
     private productService:ProductService,
+    private categoryService:CategoryService,
     private fileService:FileService,
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
@@ -39,58 +40,29 @@ export class AdministrationProductPageComponent implements OnInit{
 
   ngOnInit(): void {
     this.columnsTable = [ 'Imagen', 'ID', 'Descripcion', 'Precio', 'Disponible', 'Categoria', 'Opciones'];
-    this.productService.getAll()
-      .pipe( 
-        tap( resp => {
-
-          this.dataPage = {
-            pageable: resp.pageable,
-            isFirst: resp.first,
-            isLast: resp.last,
-            numberOfElements: resp.numberOfElements,
-            totalPages: resp.totalPages
-          };
-        }),
-        tap( ()=> {
-          for (let i = 1; i <= this.dataPage!.totalPages; i++) {
-            this.pages.push(i);
-          }
-        }),
-        tap( resp => this.currentSizeDatasource = resp.numberOfElements ),
-        tap( resp => this.dataSource= resp.content ),
-      )
-      .subscribe(); 
-  }
-
-  get getSearchValue():string {
-    return this.searchBoxValue ?? '';
-  }
-
-  setSearchValue( value:string ) {
-    this.searchBoxValue = value;
+    this.categoryService.getAll().subscribe( response => this.currentCategories = response);
     this.refreshDatasource();
-  }
-  get getCategoryName():string {
-    return this.categorySelected ?? '';
   }
   
-  setCategoryName( value:string ) {
-    this.categorySelected = value;
-    this.refreshDatasource();
-  }
-
-  get getAvailable():boolean {
-    return this.availableSelected!;
+  onSearchValue( value:string ):void {
+    this.params.description =value
+    this.applyFilters();
   }
   
-  setAvailable( value:boolean ) {
-    this.availableSelected = value;
-    this.refreshDatasource();
+  onSelectCategoryName( value:string ):void {
+    this.params.category =value;
+    this.applyFilters();
+  }
+  
+  onSelectAvailable( value:boolean ):void {
+    this.params.available =value;
+    this.applyFilters();
   }
 
-  get getCurrentSizeDatasource():number {
-    return this.currentSizeDatasource;
+  public applyFilters():void {
+    this.searchBy( this.params );
   }
+
 
   public openSaveDialog( optionSelected:string, product?:Product  ):void {
     let dialogRef;
@@ -167,16 +139,6 @@ export class AdministrationProductPageComponent implements OnInit{
       break;
     }
   }
-
-  public openAdminCategoryDialog(): void {
-    const dialogRef = this.dialog.open( CategoryAdminComponent, {  width: '450px' } );
-    dialogRef.afterClosed().subscribe( ()=> this.refreshPage() );
-  }
-
-  public refreshDatasource():void { 
-    //TODO: Aplicar la logica de filtrado
-  }
-
   public openConfirmDialog( option:string, product:Product ):void {
     let dialog;
     switch( option ){
@@ -228,24 +190,24 @@ export class AdministrationProductPageComponent implements OnInit{
       break;
     }
   }
+  public openAdminCategoryDialog(): void {
+    const dialogRef = this.dialog.open( CategoryAdminComponent, {  width: '450px' } );
+    dialogRef.afterClosed().subscribe( (changes)=> {
+      if(!changes)
+        return;
+
+      this.refreshPage();
+    });
+  }
 
   onNavigate( page:number ){
-    this.productService.getAll( (page - 1) )
-    .pipe(
-      tap( resp => {
-        this.dataPage = {
-          pageable: resp.pageable,
-          isFirst: resp.first,
-          isLast: resp.last,
-          numberOfElements: resp.numberOfElements,
-          totalPages: resp.totalPages
-        };
-        console.log(this.dataPage);
-      }),
-      tap( resp => this.currentSizeDatasource = resp.numberOfElements ),
-      tap( resp => this.dataSource= resp.content ),
-      tap( ()=> console.log(this.dataSource) )
-    ).subscribe();
+    if(this.existsParams()){
+      this.searchBy(this.params, page);
+      
+      return;
+    }
+
+    this.refreshDatasource( page );
   }
 
   private saveAndRefresh( request:ProductRequest ):void {
@@ -266,6 +228,42 @@ export class AdministrationProductPageComponent implements OnInit{
     .subscribe();
   }
 
+  private searchBy( params:Params, page?:number ):void {
+    this.productService.searchBy( params, page )
+    .pipe(
+      tap( response => {
+        this.dataPage = {
+          pageNumber: (response.pageable.pageNumber + 1),
+          isFirst: response.first,
+          isLast: response.last,
+          totalPages: response.totalPages
+        };
+      }),
+      tap( () => this.loadPages( this.dataPage!.totalPages ) ),
+      tap( response => this.datasource = response.content ) 
+    )
+    .subscribe();
+  }
+
+  private refreshDatasource( page?:number ):void {
+    this.productService.getAll( page )
+    .pipe(
+      tap( response => {
+        this.dataPage = {
+          pageNumber: (response.pageable.pageNumber + 1),
+          isFirst: response.first,
+          isLast: response.last,
+          totalPages: response.totalPages,
+        };
+        this.datasourceSize = response.totalElements
+      }),
+      tap( () =>  this.loadPages( this.dataPage!.totalPages ) ),
+      map( response => response.content ),
+      tap( products =>  this.datasource = products )
+    )
+    .subscribe();
+  }
+
   private refreshPage(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -277,5 +275,22 @@ export class AdministrationProductPageComponent implements OnInit{
     this.snackBar.open( message, 'OK', {
       duration: 1500
     });
+  }
+
+  loadPages( totalPages:number ):void {
+    this.pages = [];
+    for( let page=1; page <= totalPages; page++ ){
+      this.pages.push(page);
+    }
+  }
+
+  existsParams():boolean {
+    if( !this.params.description 
+      && !this.params.available 
+      && !this.params.category)
+      return false;
+
+    
+      return true;
   }
 }
