@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { ProductResponse } from 'src/app/shared/interfaces/response.interface';
-import { environments } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private base_url:string = environments.url + '/products';
+  private base_url:string = environment.url + '/products';
 
   constructor( private http: HttpClient ) { }
 

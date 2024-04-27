@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { environments } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @Pipe({
   standalone:true,
@@ -11,7 +11,7 @@ export class UrlImagePipe implements PipeTransform {
     if( !img || img === '' ) return 'assets/no-image.png';
 
     
-    return environments.url+`/media/${img}`;
+    return environment.url+`/media/${img}`;
   }
 
 }
