@@ -1,12 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
 
 import { ProductRequest } from '../../../shared/interfaces/request.interface';
 import { CategoryService } from '../../services/category.service';
 import { ValidatorService } from '../../services/validator.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CategoryAdminComponent } from '../category-admin/category-admin.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'products-save-dialog',
@@ -16,9 +19,10 @@ import { ValidatorService } from '../../services/validator.service';
 export class SaveDialogComponent implements OnInit{
   public title:string = 'Agregar nuevo producto';
   public categories: CategoryResponse[]= [];
-
   public newImage?:File;
   public alt_img?:any;
+
+  private dialogCategory?:MatDialogRef<ConfirmDialogComponent, any>;
   
   public form:FormGroup = this.formBuilder.group({
     description: [ '', Validators.required ],
@@ -31,6 +35,7 @@ export class SaveDialogComponent implements OnInit{
   constructor(
     private validator:ValidatorService,
     private categoryService: CategoryService,
+    private matDialog:MatDialog,
     private dialog: MatDialogRef<SaveDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data:ProductRequest,
     private formBuilder:FormBuilder,
@@ -42,9 +47,24 @@ export class SaveDialogComponent implements OnInit{
       this.title = 'Modificar producto';
     }
 
-
     this.categoryService.getAll()
-      .subscribe( cat => this.categories = cat );
+    .pipe(
+      tap( response => this.categories = response  ),
+      tap( () => this.checkSizeCategories() )
+    )
+    .subscribe();
+  }
+
+  private checkSizeCategories():void {
+    if( this.categories.length === 0 ){
+      this.dialogCategory = this.matDialog.open( ConfirmDialogComponent, {
+        data: {
+          title: 'No puede insertar un nuevo producto.',
+          description: 'Debe registrar una nueva categoria para poder insertar un producto.',
+        }
+      });
+      this.dialog.close();
+    }
   }
 
   private loadForm( data:ProductRequest ){
