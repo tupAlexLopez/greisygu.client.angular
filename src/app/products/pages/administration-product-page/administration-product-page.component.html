@@ -2,11 +2,20 @@
     <span *ngIf="datasourceSize === 0; else dashboard">
         <h1>No se encontraron registros de productos.</h1>
         <div class="text-center m-2">
-            <button style="margin-right: 2rem;" 
-                mat-button class="text-light bg-success"
-                (click)="onSaveDialog()">
-                Agregar nuevo producto
-            </button>
+            <div class="mb-2">
+                <button
+                    mat-button class="text-light bg-primary"
+                    (click)="openAdminCategoryDialog()">
+                    Administrar categorias
+                </button>
+            </div>
+            <div>
+                <button 
+                    mat-button class="text-light bg-success"
+                    (click)="onSaveDialog()">
+                    Agregar nuevo producto
+                </button>
+            </div>
         </div>
     </span>
     <ng-template #dashboard>
