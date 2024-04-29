@@ -1,7 +1,8 @@
 <mat-form-field>
         <mat-label>Categoria</mat-label>
         <mat-select>
-                <mat-option 
+                <mat-option (click)="onSelectCategory(undefined)">---</mat-option>
+                <mat-option
                         *ngFor="let category of categories"
                         [value]="category.name" 
                         (click) ="onSelectCategory( category.name)">

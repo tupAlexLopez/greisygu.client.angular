@@ -20,7 +20,7 @@ export class FilterCategoryComponent implements OnInit{
     .subscribe( response => this.categories = response );
   }
 
-  onSelectCategory( categoryName:string ):void {
+  onSelectCategory( categoryName:string|undefined ):void {
     this.eventCategory.emit( categoryName );
   }
 }

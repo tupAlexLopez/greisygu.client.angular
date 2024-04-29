@@ -8,7 +8,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class FilterAvailableComponent {
   @Output() eventAvailable = new EventEmitter<boolean>();
 
-  onClickItem( value:boolean ):void {
+  onClickItem( value:boolean|undefined ):void {
     this.eventAvailable.emit( value );
   }
 }

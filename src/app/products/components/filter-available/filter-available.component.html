@@ -1,6 +1,7 @@
 <mat-form-field>
     <mat-label>Disponibilidad</mat-label>
     <mat-select>
+        <mat-option (click)="onClickItem( undefined )">---</mat-option>
         <mat-option (click) ="onClickItem( true )" [value]="true">Disponible</mat-option>
         <mat-option (click) ="onClickItem( false )" [value]="false">No disponible</mat-option>
     </mat-select>
