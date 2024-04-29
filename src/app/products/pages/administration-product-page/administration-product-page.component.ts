@@ -12,7 +12,6 @@ import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { FileService } from '../../services/file.service';
 import { ImageResponse } from '../../../shared/interfaces/response.interface';
 import { CategoryAdminComponent } from '../../components/category-admin/category-admin.component';
-import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-administration-product-page',
@@ -57,7 +56,14 @@ export class AdministrationProductPageComponent implements OnInit{
   }
 
   public applyFilters():void {
-    this.loadDatasourceBy( this.params );
+    console.log( this.params );
+    if(this.existsParams()){
+      this.loadDatasourceBy(this.params);
+      
+      return;
+    }
+
+    this.loadDatasource();
   }
 
   public onSaveDialog():void {
