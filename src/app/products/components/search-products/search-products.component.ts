@@ -1,10 +1,8 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 import { ProductService } from '../../services/product.service';
-import { Subject, Subscription, debounceTime, map } from 'rxjs';
-
 @Component({
   selector: 'product-search',
   templateUrl: './search-products.component.html',
