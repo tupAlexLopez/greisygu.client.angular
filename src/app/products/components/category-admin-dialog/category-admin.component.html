@@ -1,0 +1,68 @@
+<div class="container p-2 text-center">
+    <mat-card-title>
+        <h1>Administracion de categorias</h1>
+    </mat-card-title>
+    <hr>
+    <mat-card-content>
+        <div class="grid">
+            <div class="col">
+                <div class="text-start">
+                    <button mat-button class="bg-success text-light" (click)="onSaveButton()">+ Nuevo</button>
+                </div>
+                <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-hover table-bordered" *ngIf="categories.length > 0; else noCategories">
+                        <thead>
+                            <tr>
+                                <th>Categorias actuales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let category of categories">
+                                <td>
+                                    <div class="row"> 
+                                        <div class="col-6 d-flex justify-content-center align-items-center">
+                                            <h4 class="height: 50px;">{{ category.name }}</h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="m-2" style="background-color: orange;" (click)="onUpdateButton( category )" mat-button><i><mat-icon>edit</mat-icon></i></button>
+                                            <button class="m-2" style="background-color: red;" (click)="onDeleteButton( category.id )" mat-button><i><mat-icon>delete</mat-icon></i></button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-template #noCategories>
+                    <div class="m-2 alert alert-danger">
+                        <h3>No se encontraron categorias existentes.</h3>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div *ngIf="enable" class="col mt-2 mb-5">
+                <form [formGroup]="form" (ngSubmit)="onSave()">
+                    <mat-form-field>
+                        <mat-label>{{ titleForm }}</mat-label>
+                        <input 
+                            matInput 
+                            formControlName="category"
+                        >
+                        <mat-error *ngIf="isInvalidField()">
+                            <strong>{{ getError }}</strong> 
+                        </mat-error>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button class="bg-primary text-light">Guardar</button>
+                        <button mat-button type="button" (click)="onCancelButton()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <div [ngClass]="{ 'text-center' : enable === false, 'text-end': enable === true }">
+            <button mat-button (click)="onCloseButton()">Cerrar</button>
+        </div>
+    </mat-card-actions>
+</div>
