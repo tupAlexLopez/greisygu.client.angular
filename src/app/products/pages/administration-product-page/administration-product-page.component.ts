@@ -15,8 +15,7 @@ import { CategoryAdminComponent } from '../../components/category-admin/category
 
 @Component({
   selector: 'app-administration-product-page',
-  templateUrl: './administration-product-page.component.html',
-  styleUrls: ['./administration-product-page.component.css']
+  templateUrl: './administration-product-page.component.html'
 })
 export class AdministrationProductPageComponent implements OnInit{
   datasourceSize:number = 0;
