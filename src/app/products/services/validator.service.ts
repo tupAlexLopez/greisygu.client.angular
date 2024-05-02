@@ -5,8 +5,7 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class ValidatorService {
-  public numberPattern:string = '^[0-9.$]*';
-  constructor() { }
+  public pricePattern:string = '^[0-9]*(\.[0-9]{2})?$';
 
   public isInvalidField( form:FormGroup, field:string ):boolean | null {
     return form.controls[field]?.errors && form.controls[field]?.touched; 
@@ -20,8 +19,6 @@ export class ValidatorService {
       switch( key ){
         case 'required':
           return 'Campo obligatorio.';
-        case 'minlength':
-          return `must have at least ${ errors[key].requiredLength } characters.`;
       }
     }
     return null;
