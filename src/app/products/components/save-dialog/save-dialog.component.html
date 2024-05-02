@@ -28,13 +28,15 @@
           required
           formControlName="price"
         >
-        <mat-error *ngIf="isInvalidField('price')">
-          <strong>{{ getFieldError('price') }}</strong> 
+
+        <mat-error *ngIf="isInvalidField( 'price')">
+          <strong>{{ getFieldError('price') }}</strong>
+          <strong *ngIf="form.get('price')?.hasError('pattern')">Se aceptan solo numeros (hasta con 2 decimales).</strong>
         </mat-error>
       </mat-form-field> 
     </div>
 
-    <div class="text-center">
+    <div>
       <mat-form-field>
         <mat-label>Categoria</mat-label>
         <mat-select formControlName="category">
@@ -42,10 +44,10 @@
         </mat-select>
 
         <mat-error *ngIf="isInvalidField('category')">
-          <strong>{{ getFieldError('price') }}</strong> 
+          <strong>Seleccione una categoria</strong> 
         </mat-error>
       </mat-form-field>
-      <mat-checkbox [checked]="currentProduct.available">Disponible</mat-checkbox>
+      <mat-checkbox formControlName="available" [checked]="currentProduct.available">Disponible</mat-checkbox>
     </div>
 
     <div>
