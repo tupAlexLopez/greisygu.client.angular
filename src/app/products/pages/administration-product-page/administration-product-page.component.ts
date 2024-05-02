@@ -293,13 +293,8 @@ export class AdministrationProductPageComponent implements OnInit{
   }
 
   private existsParams():boolean {
-    if( !this.params.description 
-      && !this.params.available 
-      && !this.params.category) { 
-        return false;
-      }
-
-    
-    return true;
+    return (this.params.description !== undefined)
+      || (this.params.available  !== undefined) 
+     || (this.params.category !== undefined);
   }
 }

@@ -22,11 +22,9 @@ export class SaveDialogComponent implements OnInit{
   public newImage?:File;
   public alt_img?:any;
 
-  private dialogCategory?:MatDialogRef<ConfirmDialogComponent, any>;
-  
   public form:FormGroup = this.formBuilder.group({
     description: [ '', Validators.required ],
-    price: [ '', [ Validators.required, Validators.pattern(this.validator.numberPattern)] ],
+    price: [ '', [ Validators.required, Validators.pattern(this.validator.pricePattern)] ],
     category: [ '', Validators.required ],
     available: [ true ],
     img: [ '' ]
@@ -35,7 +33,6 @@ export class SaveDialogComponent implements OnInit{
   constructor(
     private validator:ValidatorService,
     private categoryService: CategoryService,
-    private matDialog:MatDialog,
     private dialog: MatDialogRef<SaveDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data:ProductRequest,
     private formBuilder:FormBuilder,
@@ -49,22 +46,9 @@ export class SaveDialogComponent implements OnInit{
 
     this.categoryService.getAll()
     .pipe(
-      tap( response => this.categories = response  ),
-      tap( () => this.checkSizeCategories() )
+      tap( response => this.categories = response  )
     )
     .subscribe();
-  }
-
-  private checkSizeCategories():void {
-    if( this.categories.length === 0 ){
-      this.dialogCategory = this.matDialog.open( ConfirmDialogComponent, {
-        data: {
-          title: 'No puede insertar un nuevo producto.',
-          description: 'Debe registrar una nueva categoria para poder insertar un producto.',
-        }
-      });
-      this.dialog.close();
-    }
   }
 
   private loadForm( data:ProductRequest ){
