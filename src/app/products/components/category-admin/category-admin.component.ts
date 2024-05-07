@@ -7,11 +7,11 @@ import { tap } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { OPTIONS } from '../../../shared/interfaces/util.interface';
 import { ValidatorService } from '../../services/validator.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-category-admin',
-  templateUrl: './category-admin.component.html',
-  styleUrls: ['./category-admin.component.css']
+  templateUrl: './category-admin.component.html'
 })
 export class CategoryAdminComponent implements OnInit{
   private changes:boolean = false;
@@ -29,6 +29,7 @@ export class CategoryAdminComponent implements OnInit{
     private validator:ValidatorService,
     private formBuilder:FormBuilder,
     private categoryService:CategoryService,
+    private productService:ProductService,
     private dialog: MatDialogRef<CategoryAdminComponent>,
     private matDialog:MatDialog
   ){ }
@@ -71,6 +72,10 @@ export class CategoryAdminComponent implements OnInit{
     .subscribe( result => {
       if(!result)
         return;
+
+      this.productService.deleteProductsByCategory( idCategory )
+      .pipe( tap( ()=> this.changes = true ))
+      .subscribe();
 
       this.categoryService.delete( idCategory )
       .pipe( 

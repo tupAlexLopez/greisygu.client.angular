@@ -2,8 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'product-filter-available',
-  templateUrl: './filter-available.component.html',
-  styleUrls: ['./filter-available.component.css']
+  templateUrl: './filter-available.component.html'
 })
 export class FilterAvailableComponent {
   @Output() eventAvailable = new EventEmitter<boolean>();

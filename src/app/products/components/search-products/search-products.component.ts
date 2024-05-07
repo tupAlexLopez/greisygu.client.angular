@@ -5,8 +5,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ProductService } from '../../services/product.service';
 @Component({
   selector: 'product-search',
-  templateUrl: './search-products.component.html',
-  styleUrls: ['./search-products.component.css']
+  templateUrl: './search-products.component.html'
 })
 export class SearchProductsComponent {
   @Output() eventSearchValue = new EventEmitter<string>();

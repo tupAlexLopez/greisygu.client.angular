@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
+import { CategoryResponse, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
 
 import { ProductRequest } from '../../../shared/interfaces/request.interface';
 import { CategoryService } from '../../services/category.service';
@@ -13,8 +13,7 @@ import { tap } from 'rxjs';
 
 @Component({
   selector: 'products-save-dialog',
-  templateUrl: './save-dialog.component.html',
-  styleUrls: ['./save-dialog.component.css']
+  templateUrl: './save-dialog.component.html'
 })
 export class SaveDialogComponent implements OnInit{
   public title:string = 'Agregar nuevo producto';
@@ -34,7 +33,7 @@ export class SaveDialogComponent implements OnInit{
     private validator:ValidatorService,
     private categoryService: CategoryService,
     private dialog: MatDialogRef<SaveDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:ProductRequest,
+    @Inject(MAT_DIALOG_DATA) public data:Product,
     private formBuilder:FormBuilder,
   ){ }
 
@@ -51,7 +50,7 @@ export class SaveDialogComponent implements OnInit{
     .subscribe();
   }
 
-  private loadForm( data:ProductRequest ){
+  private loadForm( data:Product ){
     this.form.setValue({
       description: data.description,
       price: data.price,

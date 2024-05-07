@@ -8,8 +8,7 @@ type SidebarItem = {
 
 @Component({
   selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  templateUrl: './layout.component.html'
 })
 export class LayoutComponent implements OnInit{
   public sidebarItems:SidebarItem[] = [];

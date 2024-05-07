@@ -4,8 +4,7 @@ import { OPTIONS } from 'src/app/shared/interfaces/util.interface';
 
 @Component({
   selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.css']
+  templateUrl: './confirm-dialog.component.html'
 })
 export class ConfirmDialogComponent {
   public title?:string;

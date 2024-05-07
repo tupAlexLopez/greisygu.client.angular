@@ -6,8 +6,7 @@ import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
 
 @Component({
   selector: 'product-filter-category',
-  templateUrl: './filter-category.component.html',
-  styleUrls: ['./filter-category.component.css']
+  templateUrl: './filter-category.component.html'
 })
 export class FilterCategoryComponent implements OnInit{
   @Output() eventCategory:EventEmitter<string> = new EventEmitter();
