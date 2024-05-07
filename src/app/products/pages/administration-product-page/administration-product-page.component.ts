@@ -79,7 +79,7 @@ export class AdministrationProductPageComponent implements OnInit{
         price: form.price,
         available: form.available,
         img: form?.img ?? '',
-        category: { id: form.category }
+        category: form.category
       }
 
 
@@ -112,7 +112,7 @@ export class AdministrationProductPageComponent implements OnInit{
         price: form.price,
         available: form.available,
         img: product?.img ?? '',
-        category: { id: form.category }
+        category: form.category
       }
 
       if( !product?.img && form.file ){

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, filter, map, of } from 'rxjs';
-import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
-import { environment } from 'src/environments/environment.prod';
+
+import { Observable, catchError, map, of } from 'rxjs';
+
+import { CategoryResponse } from '../../shared/interfaces/response.interface';
+import { environment } from '../../../environments/environment.test';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +30,6 @@ export class CategoryService {
   }
 
   update( category:CategoryResponse ):Observable<CategoryResponse> {
-    console.log( category );
     return this.http.put<CategoryResponse>( this.base_url +`/${ category.id }`, category );
   }
 

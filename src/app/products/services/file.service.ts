@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageResponse } from 'src/app/shared/interfaces/response.interface';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment.test';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class FileService {
     const data: FormData = new FormData();
     data.append('file', request);
 
-    return this.http.post<ImageResponse>( this.base_url + '/media/upload', data );
+    return this.http.post<ImageResponse>( this.base_url + '/media', data );
   }
   
   public updateImage( filename:string ,file:File  ):Observable<ImageResponse>{ 
