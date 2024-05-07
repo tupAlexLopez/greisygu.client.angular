@@ -1,10 +1,10 @@
 import { Params } from './../../shared/interfaces/response.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { ProductResponse } from 'src/app/shared/interfaces/response.interface';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from '../../../environments/environment.test';
 
 @Injectable({
   providedIn: 'root'
@@ -34,12 +34,24 @@ export class ProductService {
     );
   }
   
-  public save( product:ProductRequest ):Observable<ProductResponse> {
-    return this.http.post<ProductResponse>( this.base_url, product );
+  public save( product:ProductRequest ):Observable<boolean> {
+    return this.http.post<ProductResponse>( this.base_url, product )
+    .pipe(
+      catchError( () => of( false )),
+      switchMap( ()=> of(true) )      
+    );
   }
 
   public update( id:string, product:ProductRequest ):Observable<ProductResponse> {
     return this.http.put<ProductResponse>( this.base_url + `/${ id }`, product );
+  }
+
+  public deleteProductsByCategory( idCategory:number ):Observable<boolean> {
+    return this.http.delete( this.base_url + `/category/${idCategory}`)
+    .pipe( 
+      catchError(()=> of(false)),
+      map ( ()=> true)
+    )
   }
 
   public delete( id:string ):Observable<boolean> {
