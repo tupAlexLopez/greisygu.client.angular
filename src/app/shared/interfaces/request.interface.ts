@@ -2,7 +2,7 @@ export interface ProductRequest {
     description: string;
     price: number;
     available: boolean;
-    category: { id:number };
+    category: number;
     img?: string;
     file?: File;
 }
