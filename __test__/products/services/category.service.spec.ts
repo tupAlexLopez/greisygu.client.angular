@@ -24,11 +24,8 @@ describe('CategoryService', () => {
   });
 
   afterEach(()=> httpTestingController.verify());
-  beforeEach(() => {
-    
-  })
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockCategories = [ 
       { id: 1, name: 'Prueba'}, 
       { id: 2, name: 'Prueba 2'}, 
@@ -46,34 +43,35 @@ describe('CategoryService', () => {
   });
 
   test('(2) Deberia traer todas las categorias disponibles.', (done) => {
-    const spy = jest.spyOn(categoryService, 'getAll').mockReturnValue( of(mockCategories ));
+    const spy = jest.spyOn(categoryService, 'getAll').mockReturnValue( of( mockCategories ));
 
     categoryService.getAll().subscribe(response => {
-      expect( response[0].id ).toEqual( mockCategories[0].id );
-      expect( response[0].name ).toEqual( mockCategories[0].name );
-
+      expect( response ).toBeTruthy();
       expect( response ).toEqual(mockCategories);
-
+      
       done();
     });
 
     expect(spy).toHaveBeenCalled();
   });
 
-  test('(3) Deberia guardar una categoria.', () => {
+  test('(3) Deberia guardar una categoria.', ( done ) => {
     const spy = jest.spyOn(categoryService, 'save').mockReturnValue(of( true ));
   
-    categoryService.save( nameCategoryTest ).subscribe(response => expect( response ).toBeTruthy());
-
+    categoryService.save( nameCategoryTest )
+    .subscribe(response => {
+      expect( response ).toBeTruthy();
+      
+      done();
+    })
     expect(spy).toHaveBeenCalled();
   });
 
   test('(4) Deberia actualizar una categoria existente.', () => {
-    const spy = jest.spyOn(categoryService, 'update').mockReturnValue(of( mockCategory ));
+    const spy = jest.spyOn(categoryService, 'update').mockReturnValue(of( true ));
   
     categoryService.update( mockCategory ).subscribe(response =>{
-      expect(response.id).toEqual( mockCategory.id );
-      expect(response.name).toEqual( mockCategory.name );
+      expect( response ).toBeTruthy();
     });
 
     expect(spy).toHaveBeenCalled();

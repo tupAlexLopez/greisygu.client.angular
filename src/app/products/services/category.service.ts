@@ -17,7 +17,7 @@ export class CategoryService {
     return this.http.get<CategoryResponse[]>( this.base_url );
   }
 
-  save( categoryName:string ):Observable<boolean> {
+  save( categoryName:string ):Observable<Boolean> {
     const data = {
       name: categoryName
     }
@@ -29,11 +29,15 @@ export class CategoryService {
     );
   }
 
-  update( category:CategoryResponse ):Observable<CategoryResponse> {
-    return this.http.put<CategoryResponse>( this.base_url +`/${ category.id }`, category );
+  update( category:CategoryResponse ):Observable<Boolean> {
+    return this.http.put<CategoryResponse>( this.base_url +`/${ category.id }`, category )
+    .pipe( 
+      catchError( ()=> of( false ) ),
+      map( () => true ) 
+    );
   }
 
-  delete( idCategory:number ):Observable<boolean> {
+  delete( idCategory:number ):Observable<Boolean> {
     return this.http.delete( this.base_url + `/${ idCategory }` )
     .pipe( 
       catchError( ()=> of( false ) ),
