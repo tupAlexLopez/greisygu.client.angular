@@ -1,13 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CategoryService } from '../../services/category.service';
-import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { tap } from 'rxjs';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { OPTIONS } from '../../../shared/interfaces/util.interface';
+import { CategoryService } from '../../services/category.service';
 import { ValidatorService } from '../../services/validator.service';
 import { ProductService } from '../../services/product.service';
+
+import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
+
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-category-admin',
@@ -73,7 +75,7 @@ export class CategoryAdminComponent implements OnInit{
       if(!result)
         return;
 
-      this.productService.deleteProductsByCategory( idCategory )
+      this.productService.deleteByCategory( idCategory )
       .pipe( tap( ()=> this.changes = true ))
       .subscribe();
 
