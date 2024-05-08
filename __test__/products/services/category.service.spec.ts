@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { of } from 'rxjs';
 
 import { CategoryService } from '../../../src/app/products/services/category.service';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
-import { of } from 'rxjs';
+
+import { CategoryResponse } from '../../../src/app/shared/interfaces/response.interface';
 
 describe('CategoryService', () => {
   let categoryService: CategoryService;
