@@ -8,10 +8,13 @@ export class ValidatorService {
   public pricePattern:string = '^[0-9]*(\.[0-9]{2})?$';
 
   public isInvalidField( form:FormGroup, field:string ):boolean | null {
-    return form.controls[field]?.errors && form.controls[field]?.touched; 
+    if( !form.get( field ) ) 
+      return null;
+
+    return form.controls[field].errors && form.controls[field].touched; 
   }
   public getFieldError( form:FormGroup ,field:string ): string|null {
-    if( !form.controls[field] ) return null;
+    if( !form.get( field ) ) return null;
 
     const errors = form.controls[field].errors || {};
     
@@ -19,6 +22,8 @@ export class ValidatorService {
       switch( key ){
         case 'required':
           return 'Campo obligatorio.';
+        case 'pattern':
+          return 'Debe cumplir expresion regular.';
       }
     }
     return null;

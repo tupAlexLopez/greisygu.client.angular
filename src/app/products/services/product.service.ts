@@ -1,10 +1,13 @@
-import { Params } from './../../shared/interfaces/response.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
-import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
-import { ProductResponse } from 'src/app/shared/interfaces/response.interface';
+
 import { environment } from '../../../environments/environment';
+import { Params } from './../../shared/interfaces/response.interface';
+
+import { ProductRequest } from '../../../../src/app/shared/interfaces/request.interface';
+import { ProductResponse } from '../../../../src/app/shared/interfaces/response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,14 +27,6 @@ export class ProductService {
     const url:string = this.base_url + `/search?page=${page}`+ paramsUrl;
   
     return this.http.get<ProductResponse>( url );
-  } 
-
-  public getProductDescriptions( description:string ):Observable<string[]> {
-    return this.http.get<ProductResponse>( this.base_url + `/search?page=0&description=${ description }`)
-    .pipe( 
-      map( response => response.content ),
-      map( resp => resp.map( p => p.description ) )
-    );
   }
   
   public save( product:ProductRequest ):Observable<boolean> {
@@ -50,7 +45,7 @@ export class ProductService {
     );
   }
 
-  public deleteProductsByCategory( idCategory:number ):Observable<boolean> {
+  public deleteByCategory( idCategory:number ):Observable<boolean> {
     return this.http.delete( this.base_url + `/category/${idCategory}`)
     .pipe( 
       catchError(()=> of(false)),
