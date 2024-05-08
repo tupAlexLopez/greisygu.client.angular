@@ -2,13 +2,18 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
+import { map } from 'rxjs';
+
 import { ProductService } from '../../services/product.service';
+
+import { Params } from '../../../../../src/app/shared/interfaces/response.interface';
 @Component({
   selector: 'product-search',
   templateUrl: './search-products.component.html'
 })
 export class SearchProductsComponent {
   @Output() eventSearchValue = new EventEmitter<string>();
+  private param:Params = { description: undefined };
 
   public descriptions:string[] = [];
   public searchInput:FormControl = new FormControl();
@@ -21,7 +26,12 @@ export class SearchProductsComponent {
     const value:string = this.searchInput.value || '';
     if(value === '') return;
     
-    this.productService.getProductDescriptions( value )
+    this.param.description = value;
+    this.productService.searchBy( this.param )
+    .pipe(
+      map( response => response.content ),
+      map( content => content.map( prod => prod.description ) )
+    )
     .subscribe( response => this.descriptions = response );
   }
 
