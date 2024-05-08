@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of } from 'rxjs';
 
 import { CategoryResponse } from '../../shared/interfaces/response.interface';
-import { environment } from '../../../environments/environment.test';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

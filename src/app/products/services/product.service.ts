@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { ProductResponse } from 'src/app/shared/interfaces/response.interface';
-import { environment } from '../../../environments/environment.test';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class ProductService {
     const url:string = this.base_url + `/search?page=${page}`+ paramsUrl;
   
     return this.http.get<ProductResponse>( url );
-  }
+  } 
 
   public getProductDescriptions( description:string ):Observable<string[]> {
     return this.http.get<ProductResponse>( this.base_url + `/search?page=0&description=${ description }`)
@@ -42,8 +42,12 @@ export class ProductService {
     );
   }
 
-  public update( id:string, product:ProductRequest ):Observable<ProductResponse> {
-    return this.http.put<ProductResponse>( this.base_url + `/${ id }`, product );
+  public update( id:string, product:ProductRequest ):Observable<Boolean> {
+    return this.http.put<ProductResponse>( this.base_url + `/${ id }`, product )
+    .pipe(
+      catchError( () => of( false )),
+      switchMap( ()=> of(true) )      
+    );
   }
 
   public deleteProductsByCategory( idCategory:number ):Observable<boolean> {
@@ -61,6 +65,7 @@ export class ProductService {
       map( () => true)
     );
   }
+
   public disable( id:string, available:boolean ):Observable<boolean> {
     return this.http.patch( this.base_url + `/${id}/${ available }`, { })
     .pipe(

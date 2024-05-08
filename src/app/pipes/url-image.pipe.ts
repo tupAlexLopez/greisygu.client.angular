@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { environment } from 'src/environments/environment.test';
+import { environment } from 'src/environments/environment';
 
 @Pipe({
   standalone:true,
