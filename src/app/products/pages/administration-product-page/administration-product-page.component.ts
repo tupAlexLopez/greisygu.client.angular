@@ -1,16 +1,20 @@
-import { Params } from './../../../shared/interfaces/response.interface';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoryResponse, DataPage, OPTIONS, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { filter, map, tap } from 'rxjs';
 import { SaveDialogComponent } from '../../components/save-dialog/save-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
-import { filter, map, pipe, tap } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { ProductService } from '../../services/product.service';
-import { Router } from '@angular/router';
-import { ProductRequest } from 'src/app/shared/interfaces/request.interface';
 import { FileService } from '../../services/file.service';
+
+import { DataPage, OPTIONS, Product } from '../../../../../src/app/shared/interfaces/response.interface';
+import { ProductRequest } from '../../../../../src/app/shared/interfaces/request.interface';
+import { Params } from './../../../shared/interfaces/response.interface';
 import { ImageResponse } from '../../../shared/interfaces/response.interface';
+
 import { CategoryAdminComponent } from '../../components/category-admin/category-admin.component';
 
 @Component({

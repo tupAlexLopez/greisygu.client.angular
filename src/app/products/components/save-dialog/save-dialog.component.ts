@@ -1,15 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { CategoryResponse, Product, ProductResponse } from 'src/app/shared/interfaces/response.interface';
+import { tap } from 'rxjs';
+import { CategoryResponse, Product } from '../../../../../src/app/shared/interfaces/response.interface';
 
 import { ProductRequest } from '../../../shared/interfaces/request.interface';
+
 import { CategoryService } from '../../services/category.service';
 import { ValidatorService } from '../../services/validator.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { CategoryAdminComponent } from '../category-admin/category-admin.component';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'products-save-dialog',
