@@ -5,7 +5,7 @@ export enum OPTIONS {
     DISABLE='disable'
 }
 
-export interface DataDialog{ 
-    option: OPTIONS, 
-    data?: any 
+export interface DataConfirmDialog{ 
+    title: string,
+    description?: string 
 };

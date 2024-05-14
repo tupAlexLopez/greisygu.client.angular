@@ -51,11 +51,6 @@ export interface ProductResponse {
     empty:            boolean;
 }
 
-export interface Category {
-    id:   number;
-    name: string;
-}
-
 export interface Pageable {
     pageNumber: number;
     pageSize:   number;
