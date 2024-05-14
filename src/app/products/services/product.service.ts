@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Params } from './../../shared/interfaces/response.interface';
+import { Params } from '../interfaces/response.interface';
 
-import { ProductRequest } from '../../../../src/app/shared/interfaces/request.interface';
-import { ProductResponse } from '../../../../src/app/shared/interfaces/response.interface';
+import { ProductRequest } from '../interfaces/request.interface';
+import { ProductResponse } from '../interfaces/response.interface';
 
 @Injectable({
   providedIn: 'root'

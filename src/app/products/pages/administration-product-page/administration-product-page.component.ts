@@ -4,18 +4,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { filter, map, tap } from 'rxjs';
-import { SaveDialogComponent } from '../../components/save-dialog/save-dialog.component';
-import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { SaveDialogComponent } from '../../components/dialogs/save-dialog/save-dialog.component';
+import { ConfirmDialogComponent } from '../../components/dialogs/confirm-dialog/confirm-dialog.component';
 
 import { ProductService } from '../../services/product.service';
-import { FileService } from '../../services/file.service';
+import { MediaFileService } from '../../services/media-file.service';
 
-import { DataPage, OPTIONS, Product } from '../../../../../src/app/shared/interfaces/response.interface';
-import { ProductRequest } from '../../../../../src/app/shared/interfaces/request.interface';
-import { Params } from './../../../shared/interfaces/response.interface';
-import { ImageResponse } from '../../../shared/interfaces/response.interface';
+import { DataPage, OPTIONS, Product } from '../../interfaces/response.interface';
+import { ProductRequest } from '../../interfaces/request.interface';
+import { Params } from '../../interfaces/response.interface';
+import { ImageResponse } from '../../interfaces/response.interface';
 
-import { CategoryAdminComponent } from '../../components/category-admin/category-admin.component';
+import { CategoryAdminComponent } from '../../components/dialogs/category-admin-dialog/category-admin-dialog.component';
 
 @Component({
   selector: 'app-administration-product-page',
@@ -33,7 +33,7 @@ export class AdministrationProductPageComponent implements OnInit{
   constructor( 
     private router:Router,
     private productService:ProductService,
-    private fileService:FileService,
+    private fileService:MediaFileService,
     private dialog:MatDialog,
     private snackBar:MatSnackBar,
   ) {}
@@ -89,7 +89,7 @@ export class AdministrationProductPageComponent implements OnInit{
 
       if( form.file ){ 
         const { file } = form;
-        this.fileService.uploadImage( file )
+        this.fileService.upload( file )
         .subscribe( (resp:ImageResponse) => {
           request.img = resp.filename;
           this.saveAndRefresh( request );
@@ -121,7 +121,7 @@ export class AdministrationProductPageComponent implements OnInit{
 
       if( !product?.img && form.file ){
         const { file } =form; 
-        this.fileService.uploadImage( file )
+        this.fileService.upload( file )
         .subscribe( resp => {
           request.img = resp.filename;
           this.updateAndRefresh( product!.id, request );
@@ -132,7 +132,7 @@ export class AdministrationProductPageComponent implements OnInit{
 
       if( product?.img && form.file ){
         const { file } =form;
-        this.fileService.updateImage( product.img, file )
+        this.fileService.update( product.img, file )
         .subscribe( resp => {
           request.img = resp.filename; 
           this.updateAndRefresh( product.id, request );

@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { CategoryService } from '../../services/category.service';
 
-import { CategoryResponse } from 'src/app/shared/interfaces/response.interface';
+import { CategoryResponse } from 'src/app/products/interfaces/response.interface';
 
 @Component({
   selector: 'product-filter-category',
