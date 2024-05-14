@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { tap } from 'rxjs';
-import { CategoryResponse, Product } from '../../../../../src/app/shared/interfaces/response.interface';
+import { CategoryResponse, Product } from '../../../interfaces/response.interface';
 
-import { ProductRequest } from '../../../shared/interfaces/request.interface';
+import { ProductRequest } from '../../../interfaces/request.interface';
 
-import { CategoryService } from '../../services/category.service';
-import { ValidatorService } from '../../services/validator.service';
+import { CategoryService } from '../../../services/category.service';
+import { ValidatorService } from '../../../services/validator.service';
 
 @Component({
   selector: 'products-save-dialog',
