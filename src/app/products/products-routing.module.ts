@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdministrationProductPageComponent } from './pages/administration-product-page/administration-product-page.component';
 
 const routes: Routes = [
-  { path: 'admin', component: AdministrationProductPageComponent },
+  { path: 'admin', component: AdministrationProductPageComponent, title: 'Administracion - GreisyGu$' },
   { path: '**', redirectTo: 'admin' },
 ];
 

@@ -6,7 +6,7 @@ import { LayoutComponent } from './shared/layout/layout.component';
 const routes: Routes = [ 
   { path: '', component: LayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent },
+      { path: 'home', component: HomeComponent, title: 'Home - GreisyGu$' },
       { path: 'products', loadChildren: () => import('./products/products.module').then( products => products.ProductsModule ) },
       { path: '**', redirectTo: 'home' }
     ]
