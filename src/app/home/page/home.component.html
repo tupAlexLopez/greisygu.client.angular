@@ -1,12 +1,12 @@
 <div class="p-2 text-center">
-    <img style="height: 10rem;" src="./assets/icons/greisygu-logo.png">
-    <h1>Bienvenido/a</h1>
-    <h3>¿Que desea realizar?</h3>
+    <img style="height: 25rem;" src="./assets/icons/greisygu-logo.png">
+    <h1>{{ title }}</h1>
+    <h3>{{ description }}</h3>
 
     <div class="d-flex justify-content-center">
-        <div class="card" style="width: 20rem; margin-right: 2.5rem;">
+        <div class="card" style="width: 10rem;">
             <img class="img-card-top" src="./assets/icons/admin.png" alt="admin image">
-            <a (click)="onClick()" class="m-3 btn btn-primary">Administrar productos</a>
+            <button (click)="onClick()" class="m-3 btn btn-primary">Administrar productos</button>
         </div>
     </div>
 </div>
