@@ -6,7 +6,7 @@ import { map } from 'rxjs';
 
 import { ProductService } from '../../services/product.service';
 
-import { Params } from '../../../../../src/app/shared/interfaces/response.interface';
+import { Params } from '../../interfaces/response.interface';
 @Component({
   selector: 'product-search',
   templateUrl: './search-products.component.html'
@@ -22,22 +22,25 @@ export class SearchProductsComponent {
     private productService:ProductService
   ){ }
 
-  searchProduct() {
+  public searchProduct() {
     const value:string = this.searchInput.value || '';
-    if(value === '') return;
+    if(value === '') { 
+      this.descriptions = []
+      return
+    };
     
     this.param.description = value;
     this.productService.searchBy( this.param )
     .pipe(
       map( response => response.content ),
-      map( content => content.map( prod => prod.description ) )
+      map( content => content.map( prod => prod.description ) ),
     )
     .subscribe( response => this.descriptions = response );
   }
 
-  onSelectedOption( event:MatAutocompleteSelectedEvent ):void { 
+  public onSelectedOption( event:MatAutocompleteSelectedEvent ):void { 
     this.eventSearchValue.emit( event.option.value ); 
   }
   
-  onInputEnter( value:string ):void { this.eventSearchValue.emit( value ); }
+  public onInputEnter( value:string ):void { this.eventSearchValue.emit( value ); }
 }
