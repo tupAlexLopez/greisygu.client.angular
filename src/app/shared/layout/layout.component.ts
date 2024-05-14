@@ -11,6 +11,7 @@ type SidebarItem = {
   templateUrl: './layout.component.html'
 })
 export class LayoutComponent implements OnInit{
+  public titleMenuBar:string = 'greisygu$';
   public sidebarItems:SidebarItem[] = [];
   
   ngOnInit(): void {
